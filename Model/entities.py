@@ -7,6 +7,7 @@ class Entity(object):
 		self.left = rect.left
 		self.right = rect.right
 
+
 """
 The base for characters
 """
@@ -18,33 +19,21 @@ class Character(Entity):
 		self.hp = 1
 		self.xSpeed = 1
 		self.ySpeed = 1
-		super.__init__(self, rect)
-
-	def get_hp(self):
-		return self.hp
-
-	def get_total_hp(self):
-		return self.total_hp
-
-	def get_xSpeed(self):
-		return self.xSpeed
-
-	def get_ySpeed(self):
-		return self.ySpeed
+		Entity.__init__(self, rect)
 
 
 class Enemy(Character):
-	def __init__(position):
-		super(position)
+	def __init__(self, rect):
+		Character.__init__(self, rect)
 		self.total_hp = 8
 
-class SunSupot(Enemy):
-	def __init__(position):
-		super(position)
+class SunSpot(Enemy):
+	def __init__(self,rect):
+		Enemy.__init__(self, rect)
 
 class Player(Character):
-	def __init__(position):
-		super(position)
+	def __init__(self, rect):
+		Character.__init__(self, rect)
 		self.total_hp = 10
 		self.xSpeed = 2
 
@@ -61,8 +50,8 @@ lava - if you touch it, you diiiiiie
 
 class Block(Entity):
 
-	def __init__(self, rect, imageFile):
-		super.__init__(self, rect, imageFile)
+	def __init__(self, rect):
+		Entity.__init__(self, rect)
 
 class SolidBlock(Block):
 
@@ -85,6 +74,6 @@ class Lava(Block):
 class Bullet(Entity):
 
 	'''speed is a 2d array [x, y]'''
-	def __init__(self, rect, imageFile, speed):
-		super(self, rect imageFile)
+	def __init__(self, rect, speed):
+		Entity.__init__(self, rect)
 		self.speed = speed

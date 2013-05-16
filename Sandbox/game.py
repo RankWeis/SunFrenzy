@@ -22,7 +22,7 @@ while True:
 		"""Add gravity"""
 		speed[1] += gravity
 		if speed[1] < .1 and speed[1] > -.1: speed[1] = 1
-		print speed[1]
+		print(speed[1])
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT: sys.exit()
