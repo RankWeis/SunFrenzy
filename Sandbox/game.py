@@ -16,7 +16,7 @@ ballrect = ball.get_rect()
 ballrect.top = 0;
 ballrect.bottom = height;
 
-while 1:
+while True:
     
 	if ballrect.bottom < height:
 		"""Add gravity"""

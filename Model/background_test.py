@@ -1,10 +1,12 @@
-from background import Background, Block
+from entities import Background, Block
 import unittest
 
 class BasicBlockTest(unittest.TestCase):
 
 	def setUp(self):
 		self.block = Block(1,8)
+		self.enemy = Enemy(1,9)
+		self.player = Player(1,10)
 
 	def test_perm(self):
 		self.assertFalse(self.block.is_permeable())

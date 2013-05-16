@@ -1,8 +1,7 @@
 class Entity(object):
 
-	def __init__(self, rect, imageFile):
+	def __init__(self, rect):
 		self.rect = rect
-		self.imageFile = imageFile
 		self.top = rect.top
 		self.bottom = rect.bottom
 		self.left = rect.left
@@ -14,12 +13,12 @@ The base for characters
 
 class Character(Entity):
 
-	def __init__(self, rect, imageFile):
+	def __init__(self, rect):
 		self.total_hp = 1
 		self.hp = 1
 		self.xSpeed = 1
 		self.ySpeed = 1
-		super.__init__(self, rect, imageFile)
+		super.__init__(self, rect)
 
 	def get_hp(self):
 		return self.hp
