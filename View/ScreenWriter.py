@@ -1,5 +1,6 @@
 
-import pygame
+from Model import entities
+from pygame import display
 
 class ScreenWriter(object):
 	
@@ -11,18 +12,18 @@ class ScreenWriter(object):
 	def __init__(self):
 		loadImages()
 
-	def drawScreen(entities):
-		screen = pygame.display.set_mode(size)
-		screen.fill(black)
+	def drawScreen(entityDict):
+		screen = display.set_mode(SIZE)
+		screen.fill(BLACK)
 
 		"""Entities is a dict of arrays of characters/blocks,
 			ordered by z index"""
-		for i in range(0, 5)
-			entityList = entities[i]
+		for i in range(5):
+			entityList = entityDict[i]
 			for entity in entityList:
 				screen.blit(images[entity.imageFile], entity.getRect())
 
-		pygame.display.flip()
+		display.flip()
 
 
 	def loadImages():
