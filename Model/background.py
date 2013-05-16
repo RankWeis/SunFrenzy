@@ -9,19 +9,15 @@ lava - if you touch it, you diiiiiie
 
 """
 
-class Background(object):
+class Block(object):
 
-	def __init__(self, x, y):
-		self.xPos = x
-		self.yPos = y
+	def __init__(self, rect):
+		self.bottom = rect.bottom
+		self.top = rect.top
+		self.left = rect.left
+		self.right = rect.right
 
-
-	
-	def get_pos(self):
-		"""Gets the x,y pair that makes the position"""
-		return (self.xPos,self.yPos)
-
-class Block(Background):
+class SolidBlock(Block):
 
 	def is_permeable(self):
 		return False
@@ -29,7 +25,7 @@ class Block(Background):
 	def is_deadly(self):
 		return False
 
-class Lava(Background):
+class Lava(Block):
 
 	def is_permeable(self):
 		return True

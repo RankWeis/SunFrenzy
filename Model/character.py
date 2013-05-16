@@ -4,12 +4,15 @@ The base for characters
 
 class Character(object):
 
-	def __init__(self, position):
+	def __init__(self, rect):
 		self.total_hp = 1
 		self.hp = 1
 		self.xSpeed = 1
 		self.ySpeed = 1
-		self.position = position
+		self.top = rect.top
+		self.bottom = rect.bottom
+		self.left = rect.left
+		self.right = rect.right
 
 	def get_hp(self):
 		return self.hp
@@ -22,9 +25,6 @@ class Character(object):
 
 	def get_ySpeed(self):
 		return self.ySpeed
-
-	def get_position(self):
-		return self.position
 
 
 class Enemy(Character):
