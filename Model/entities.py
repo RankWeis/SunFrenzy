@@ -81,3 +81,11 @@ class Lava(Block):
 	def is_deadly(self):
 		return True
 
+"""End of Blocks"""
+
+class Bullet(Entity):
+
+	'''speed is a 2d array [x, y]'''
+	def __init__(self, rect, imageFile, speed):
+		super(self, rect imageFile)
+		self.speed = speed
