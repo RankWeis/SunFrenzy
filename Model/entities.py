@@ -1,15 +1,11 @@
 from Model.attributes import *
+import logging
 
 class Entity(object):
 
 	def __init__(self, rect):
 		self.rect = rect
-		self.top = rect.top
-		self.bottom = rect.bottom
-		self.left = rect.left
-		self.right = rect.right
 		self.attributes = Attributes()
-
 
 """
 The base for characters
@@ -20,8 +16,8 @@ class Character(Entity):
 	def __init__(self, rect):
 		self.total_hp = 1
 		self.hp = 1
-		self.xSpeed = 1
-		self.ySpeed = 1
+		self.xSpeed = 0
+		self.ySpeed = 0
 		Entity.__init__(self, rect)
 		
 	def get_hp(self):
@@ -50,7 +46,6 @@ class Player(Character):
 	def __init__(self, rect):
 		Character.__init__(self, rect)
 		self.total_hp = 10
-		self.xSpeed = 2
 
 """
 The base for backgrounds. Backgrounds can be

@@ -1,25 +1,30 @@
 from Controller.actions import *
+import sys, pygame
 
 """TODO: check game state to see if we're inside a level,
 		 no current dialog box, etc etc"""
-def handleInput(player):
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT: sys.exit()
-		elif event.type == pygame.KEYDOWN: handleKeyDown(player, event)
-		elif event.type == pygame.KEYUP: handleKeyUp(player, event)
+def handleInput(player, blocks, events):
+	for event in events:
+		if event.type == pygame.QUIT:
+			sys.exit()
+		elif event.type == pygame.KEYDOWN:
+			handleKeyDown(player, blocks, event)
+		elif event.type == pygame.KEYUP:
+			handleKeyUp(player, event)
 
-def handleKeyDown(player, event):
+def handleKeyDown(player, blocks, event):
 	if event.key == pygame.K_LEFT:
 		moveLeft(player)
+		print "handlekeydown: " + str(player.xSpeed)
 	elif event.key == pygame.K_RIGHT:
 		moveRight(player)
 	elif event.key == pygame.K_UP:
-		jump(player)
+		jump(player, blocks)
 
 def handleKeyUp(player, event):
 	if event.key == pygame.K_LEFT:
-		stopLeftMove(player)
+		stopMoveLeft(player)
 	elif event.key == pygame.K_RIGHT:
-		stopRightMove(player)
+		stopMoveRight(player)
 	elif event.key == pygame.K_UP:
 		stopJump(player)
