@@ -6,6 +6,7 @@ class Entity(object):
 		self.bottom = rect.bottom
 		self.left = rect.left
 		self.right = rect.right
+		self.attributes = Attributes()
 
 
 """
@@ -20,6 +21,18 @@ class Character(Entity):
 		self.xSpeed = 1
 		self.ySpeed = 1
 		Entity.__init__(self, rect)
+		
+	def get_hp(self):
+		return self.hp
+
+	def get_total_hp(self):
+		return self.total_hp
+
+	def get_xSpeed(self):
+		return self.xSpeed
+
+	def get_ySpeed(self):
+		return self.ySpeed
 
 
 class Enemy(Character):
