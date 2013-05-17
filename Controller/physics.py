@@ -11,5 +11,5 @@ def isOnGround(character, blocks):
 
 def addGravity(characters):
 	for character in characters:
-		if !isOnGround(character, blocks):
+		if not isOnGround(character, blocks):
 			character.ySpeed += gravity
