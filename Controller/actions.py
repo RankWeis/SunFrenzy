@@ -12,8 +12,11 @@ def moveRight(entity):
 	entity.xSpeed = entity.attributes[X_SPEED]
 
 def jump(entity, blocks):
-	if isOnGround(entity):
+	if isOnGround(entity, blocks):
+		print("Is on ground")
 		entity.ySpeed = -entity.attributes[Y_SPEED]
+	else:
+		print ("Is not on ground")
 
 def stopMoveLeft(entity):
 	if entity.xSpeed < 0:

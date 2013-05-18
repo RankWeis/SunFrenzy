@@ -71,6 +71,14 @@ class SolidBlock(Block):
 	def is_deadly(self):
 		return False
 
+class Air(Block):
+
+	def is_permeable(self):
+		return True
+
+	def is_deadly(self):
+		return False
+
 class Lava(Block):
 
 	def is_permeable(self):
