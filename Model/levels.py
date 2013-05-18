@@ -46,6 +46,12 @@ class Level(object):
 		for y in range(len(level)):
 			for x in range(len(level[y])):
 				self.blocks[i] = self.char_to_ent( level1[y][x], x, y)
+				if x != 0:
+					self.blocks[i].leftBlock = self.blocks[i-1]
+					self.blocks[i-1].rightBlock = self.blocks[i]
+				if y != 0:
+					self.blocks[i].aboveBlock = self.blocks[i-len(level[y])]
+					self.blocks[i-len(level[y])].belowBlock = self.blocks[i]
 				i += 1
 		return self.blocks
 

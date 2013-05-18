@@ -14,12 +14,19 @@ def isOnGround(character, blocks):
 		#skip player, because player is in the block array. I dont think
 		#it should be but I don't want to fix that right now
 		if (isinstance(block, Player)): continue
-		if block.is_permeable():
-			continue
-		else:
-			if character.rect.colliderect(block.rect):
-				return True
-	return False
+		
+		#if the player collides with an air block with room underneath the
+		#player, return false
+		if (block.rect.collidepoint(character.rect.center) or block.rect.colliderect(character.rect)) and block.is_permeable():
+			if isinstance(block.belowBlock, Player) or  block.belowBlock.is_permeable():
+				return False
+
+		#if block.is_permeable():
+		#	continue
+		#else:
+		#	if character.rect.colliderect(block.rect):
+		#		return True
+	return True
 
 def addGravity(characters, blocks):
 	gravity = .1

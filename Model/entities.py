@@ -63,6 +63,10 @@ class Block(Entity):
 
 	def __init__(self, rect):
 		Entity.__init__(self, rect)
+		self.aboveBlock = None
+		self.belowBlock = None
+		self.leftBlock = None
+		self.rightBlock = None
 
 class SolidBlock(Block):
 
