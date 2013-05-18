@@ -1,5 +1,6 @@
 import sys, pygame
 from Controller.input import *
+from Controller.physics import *
 from Model.entities import *
 from Model.levels import *
 from View.ScreenWriter import *
@@ -35,12 +36,8 @@ while True:
 	clock.tick(50)
 	logger.debug("Check gravity")
 
-	if player.rect.bottom < height:
-		"""Add gravity"""
-		player.ySpeed += gravity
-		if player.ySpeed < .1 and player.ySpeed > -.1: 
-			player.ySpeed = 1
-		print("Y-speed: " + str(player.ySpeed))
+	print("blah " + str(level.curr_lvl))
+	addGravity([player], level.curr_lvl)
 
 
 	logger.debug("Handle input")
@@ -49,18 +46,20 @@ while True:
 	logger.debug("Moving player")
 	logger.info("Rect1: " + str(player.rect))
 	# logger.error("Speed: " + str([player.xSpeed, player.ySpeed]))
-	collide = player.rect.collidelistall(level.blocks)
-	
-	player.rect = player.rect.move([player.xSpeed, player.ySpeed])
 
-	logger.debug("Checking boundaries")
-	if player.rect.left < 0 or player.rect.right > width:
-		logger.info("Inside if")
-		player.xSpeed = 0
-	if player.rect.bottom > height:
-	 	player.ySpeed = 0
-	 	player.rect.top = 0;
-	 	player.rect.bottom = height;
+	#get list of collidable blocks
+	collidableBlocks = []
+	i = 0
+	for block in level.curr_lvl:
+		print ("current block: " + str(type(block)))
+		if (not isinstance(block, Player)) and block.is_permeable() == False:
+			print "hahaha"
+			collidableBlocks.append(block)
+			i += 1
+	print ("collides: " + str(collidableBlocks))
+	collide = player.rect.collidelistall(collidableBlocks)
+	if (collide): player.ySpeed = 0
+	player.rect = player.rect.move([player.xSpeed, player.ySpeed])
 
 	logger.debug("Draw")
 	screen.fill(black)
