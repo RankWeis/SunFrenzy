@@ -13,8 +13,10 @@ def moveRight(entity):
 
 def jump(entity, blocks):
 	if isOnGround(entity, blocks):
-		print("Is on ground")
 		entity.ySpeed = -entity.attributes[Y_SPEED]
+		if isinstance(entity,Character):
+			print("Set Jump")
+			entity.jumping = True
 	else:
 		print ("Is not on ground")
 
@@ -28,4 +30,6 @@ def stopMoveRight(entity):
 
 def stopJump(entity):
 	if entity.ySpeed < 0:
+		if isinstance(entity,Character):
+			entity.jumping = False
 		entity.ySpeed = 0

@@ -18,6 +18,7 @@ class Character(Entity):
 		self.hp = 1
 		self.xSpeed = 0
 		self.ySpeed = 0
+		self.jumping=False
 		Entity.__init__(self, rect)
 		
 	def get_hp(self):

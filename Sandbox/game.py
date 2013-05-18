@@ -31,12 +31,9 @@ player = level.player
 playerRect = player.rect
 clock = pygame.time.Clock()
 
-logger.debug("Begin while loop")
 while True:
 	clock.tick(50)
-	logger.debug("Check gravity")
 
-	print("blah " + str(level.curr_lvl))
 	addGravity([player], level.curr_lvl)
 
 
@@ -47,18 +44,9 @@ while True:
 	logger.info("Rect1: " + str(player.rect))
 	# logger.error("Speed: " + str([player.xSpeed, player.ySpeed]))
 
-	#get list of collidable blocks
-	collidableBlocks = []
-	i = 0
-	for block in level.curr_lvl:
-		print ("current block: " + str(type(block)))
-		if (not isinstance(block, Player)) and block.is_permeable() == False:
-			print "hahaha"
-			collidableBlocks.append(block)
-			i += 1
-	print ("collides: " + str(collidableBlocks))
-	collide = player.rect.collidelistall(collidableBlocks)
-	if (collide): player.ySpeed = 0
+	# collide = player.rect.collidelistall(level.collidable_blocks)
+	# if (collide): 
+	# 	player.ySpeed = 0
 	player.rect = player.rect.move([player.xSpeed, player.ySpeed])
 
 	logger.debug("Draw")

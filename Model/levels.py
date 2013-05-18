@@ -37,6 +37,7 @@ level1 = [
 class Level(object):
 
 	def __init__(self):
+		self.collidable_blocks = None
 		self.curr_lvl = self.get_level1()
 
 	def level_ingestor(self, level):
@@ -52,7 +53,12 @@ class Level(object):
 	def char_to_ent(self, entity_char, x, y ):
 		rect = pygame.Rect( x * blockSizeX, y * blockSizeY, blockSizeX, blockSizeY )
 		if entity_char == 'W' or entity_char == 'G' or entity_char == 'B':
-			return SolidBlock( rect)
+			block = SolidBlock(rect)
+			if not self.collidable_blocks:
+				self.collidable_blocks = [block]
+			else:
+				self.collidable_blocks.append(block)
+			return block
 		elif entity_char == 'S':
 			## Not the right way to do it, but I want to test ##
 			rect = pygame.Rect( x * blockSizeX, (y - 1) * blockSizeY, blockSizeX, blockSizeY)
