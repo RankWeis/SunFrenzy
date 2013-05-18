@@ -11,8 +11,8 @@ def moveLeft(entity):
 def moveRight(entity):
 	entity.xSpeed = entity.attributes[X_SPEED]
 
-def jump(entity, blocks):
-	if isOnGround(entity, blocks):
+def jump(entity, blocks, level):
+	if isOnGround(entity, blocks, level):
 		entity.ySpeed = -entity.attributes[Y_SPEED]
 		if isinstance(entity,Character):
 			print("Set Jump")

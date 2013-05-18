@@ -34,12 +34,12 @@ clock = pygame.time.Clock()
 while True:
 	clock.tick(50)
 
-	addGravity([player], level.curr_lvl)
+	addGravity([player], level.curr_lvl, level)
 
 
 	logger.debug("Handle input")
 	logger.info("Speed1: " + str([player.xSpeed, player.ySpeed]))
-	handleInput(player, level.blocks, pygame.event.get())
+	handleInput(player, level.blocks, pygame.event.get(), level)
 	logger.debug("Moving player")
 	logger.info("Rect1: " + str(player.rect))
 	# logger.error("Speed: " + str([player.xSpeed, player.ySpeed]))
