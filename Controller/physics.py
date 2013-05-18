@@ -10,25 +10,28 @@ def isOnGround(character, blocks):
 		# Shouldn't never be a case when there's no blocks...except in test
 		print("With no blocks I can flyyyyyy")
 		return True
+	i = 0
 	for block in blocks:
 		#skip player, because player is in the block array. I dont think
 		#it should be but I don't want to fix that right now
 		if (isinstance(block, Player)): continue
+		if isinstance(block.belowBlock, Player): continue
+
+		#this if statement fires on every block in the level, so I feel like
+		#it shouldn't work, but it seems to....
+		if block.is_permeable() and block.rect.bottom > character.rect.bottom: continue
 		
-		#if Air is below player
-		#BUG: can't jump when hanging over a pit, I think because technically
-		#     an air block is below you, even though you're hanging over an
-		#     edge
-		if (block.rect.collidepoint(character.rect.center) or block.rect.colliderect(character.rect)) and block.is_permeable():
-			if isinstance(block.belowBlock, Player) or  block.belowBlock.is_permeable():
-				return False
+		#if ground is below player
+		if (block.rect.collidepoint(character.rect.center) or block.rect.colliderect(character.rect)):
+			if not block.belowBlock.is_permeable():
+				return True
 
 		#if block.is_permeable():
 		#	continue
 		#else:
 		#	if character.rect.colliderect(block.rect):
 		#		return True
-	return True
+	return False
 
 def addGravity(characters, blocks):
 	gravity = .1
