@@ -86,55 +86,33 @@ class Level(object):
 		yRet = int((math.floor((xypos[1]) + 5) / blockSizeY))
 		return (xRet, yRet)
 
-	def get_all_blocks_surrounding_char(self, character):
+	def perform( fun, *args):
+		return fun( *args)
+
+	def get_surrounding_blocks(self, character):
 		rect = character.rect
-		return self.get_blocks_surrounding_char(character, (rect.topleft, rect.bottomleft, rect.topright, rect.bottomright), False)
+		return self.get_blocks(character, (rect.topleft, rect.bottomleft, rect.topright, rect.bottomright))
 
 	def get_bottom_blocks(self, character):
 		rect = character.rect
-		return self.get_blocks_surrounding_char(character, (rect.midbottom,None), True)
+		return self.get_blocks(character, (rect.midbottom,None))
+
+	def get_left_blocks(self, character):
+		rect = character.rect
+		return self.get_blocks(character, (rect.topleft, rect.bottomleft))
 
 
-	def get_blocks_surrounding_char(self, character, check_blocks, bottom):
+	def get_blocks(self, character, check_blocks):
 		curr_locs = []
 		for pos in check_blocks:
 			if not pos: continue
 			arr_loc = self.map_to_arr(pos)
 			if not arr_loc in curr_locs:
 				curr_locs.append(arr_loc)
-		curr_locs_temp = list(curr_locs)
-		for surr in check_blocks:
-			if not surr:
-				continue
-			arr_loc = self.get_surrounding_pos(surr, bottom)
-			for item in arr_loc:
-				if item and not item in curr_locs:
-					curr_locs.append(item)
 		ret = []
 		for item in curr_locs:
 			blk = self.blocks_rep[item[1]][item[0]]
 			if not isinstance(blk,Player):
 				ret.append(blk)
-		print("These blocks: " + str(curr_locs))
 		return ret
-
-	def get_surrounding_pos( self, pos, bottom ):
-		x = pos[0]
-		y = pos[1]
-		yMax = len(self.curr_lvl_str)
-		xMax = len(self.curr_lvl_str[0])
-		# Could loop, but this is also clear
-
-		surroundingAll = [(x+1,y+1),(x+1,y),(x+1,y-1),(x,y+1),(x,y-1),(x-1,y+1),(x-1,y),(x-1,y-1)]
-		surroundingBottom = [(x,y-1)]
-		surrounding = surroundingAll
-		if bottom:
-			surrounding = surroundingBottom
-		temp = list(surrounding)
-		for item in surrounding:
-			if item[0] < 0 or item[0] > xMax or item[1] < 0 or item[1] > yMax:
-				surrounding.remove(item)
-		return surrounding
-
-
 

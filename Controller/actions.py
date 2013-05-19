@@ -5,14 +5,18 @@ from Controller.physics import *
          speeds and decide whether to set them to 0 if they've hit a wall
          or the ground, but I'm not really sure. Something to consider
          moving forward"""
-def moveLeft(entity):
-	entity.xSpeed = -entity.attributes[X_SPEED]
+def moveLeft(entity, level):
+	#Works if you tap left key but not if you hold
+	temp_rect = entity.rect.copy()
+	temp_rect.x = -entity.attributes[X_SPEED]
+	if not collision_detected(temp_rect, level.get_left_blocks(entity)):
+		entity.xSpeed = -entity.attributes[X_SPEED]
 
-def moveRight(entity):
+def moveRight(entity, level):
 	entity.xSpeed = entity.attributes[X_SPEED]
 
-def jump(entity, blocks, level):
-	if isOnGround(entity, blocks, level):
+def jump(entity, level):
+	if isOnGround(entity, level):
 		entity.ySpeed = -entity.attributes[Y_SPEED]
 		if isinstance(entity,Character):
 			print("Set Jump")
