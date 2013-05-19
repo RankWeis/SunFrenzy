@@ -9,7 +9,9 @@ def handleInput(player, events, level):
 			sys.exit()
 		elif event.type == pygame.KEYUP:
 			handleKeyUp(player, event)
-	handleKeyDown(player, pygame.key.get_pressed(), level)
+	ret = handleKeyDown(player, pygame.key.get_pressed(), level)
+	doMovement(player,level)
+	return ret
 
 def handleKeyDown(player, key, level):
 	if key[pygame.K_LEFT]:
@@ -18,6 +20,10 @@ def handleKeyDown(player, key, level):
 		moveRight(player, level)
 	if key[pygame.K_UP]:
 		jump(player, level)
+	if key[pygame.K_r]:
+		return True
+	if key[pygame.K_ESCAPE]:
+		sys.exit()
 
 def handleKeyUp(player, event):
 	if event.key == pygame.K_LEFT:
