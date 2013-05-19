@@ -5,7 +5,7 @@ from Model.entities import *
 #	   it won't work. There's a hack in game.py that fixes this right now
 
 def isOnGround(character, level):
-	blocks = level.get_bottom_blocks( character)
+	blocks = level.get_bottom_blocks( character.rect)
 	return collision_detected(character.rect, blocks)
 
 

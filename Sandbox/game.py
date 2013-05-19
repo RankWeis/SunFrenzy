@@ -44,10 +44,27 @@ while True:
 	logger.info("Rect1: " + str(player.rect))
 	# logger.error("Speed: " + str([player.xSpeed, player.ySpeed]))
 
+	"""
+	Below should go in the controller, but I'm just messing around to see if it works
+	"""
 	# collide = player.rect.collidelistall(level.collidable_blocks)
 	# if (collide): 
 	# 	player.ySpeed = 0
-	player.rect = player.rect.move([player.xSpeed, player.ySpeed])
+	temp_rectX = player.rect.copy().move([player.xSpeed, 0])
+	temp_rectY = player.rect.copy().move([0,player.ySpeed])
+	xSpeed = 0
+	ySpeed = 0
+
+
+	if not will_collideX(player, temp_rectX, level):
+		xSpeed = player.xSpeed
+	if not will_collideY(player, temp_rectY, level):
+		ySpeed = player.ySpeed
+	"""
+	End controller bit
+	"""
+
+	player.rect = player.rect.move(xSpeed,ySpeed)
 
 	logger.debug("Draw")
 	screen.fill(black)

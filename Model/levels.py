@@ -86,23 +86,23 @@ class Level(object):
 		yRet = int((math.floor((xypos[1]) + 5) / blockSizeY))
 		return (xRet, yRet)
 
-	def perform( fun, *args):
-		return fun( *args)
+	def get_surrounding_blocks(self, rect):
+		return self.get_blocks((rect.topleft, rect.bottomleft, rect.topright, rect.bottomright))
 
-	def get_surrounding_blocks(self, character):
-		rect = character.rect
-		return self.get_blocks(character, (rect.topleft, rect.bottomleft, rect.topright, rect.bottomright))
+	def get_bottom_blocks(self, rect):
+		return self.get_blocks((rect.midbottom,None))
 
-	def get_bottom_blocks(self, character):
-		rect = character.rect
-		return self.get_blocks(character, (rect.midbottom,None))
+	def get_left_blocks(self, rect):
+		return self.get_blocks((rect.midleft, None))
 
-	def get_left_blocks(self, character):
-		rect = character.rect
-		return self.get_blocks(character, (rect.topleft, rect.bottomleft))
+	def get_right_blocks(self, rect):
+		return self.get_blocks((rect.midright, None))
+
+	def get_upper_blocks(self, rect):
+		return self.get_blocks((rect.midtop,None))
 
 
-	def get_blocks(self, character, check_blocks):
+	def get_blocks(self, check_blocks):
 		curr_locs = []
 		for pos in check_blocks:
 			if not pos: continue
@@ -111,8 +111,16 @@ class Level(object):
 				curr_locs.append(arr_loc)
 		ret = []
 		for item in curr_locs:
+			if not self.is_onscreen(item):
+				continue
 			blk = self.blocks_rep[item[1]][item[0]]
 			if not isinstance(blk,Player):
 				ret.append(blk)
 		return ret
+
+	def is_onscreen(self, loc):
+		if loc[1] >= 0 and loc[1] < len(self.curr_lvl_str):
+			if loc[0] >= 0 and loc[0] < len(self.curr_lvl_str[0]):
+				return True
+		return False
 

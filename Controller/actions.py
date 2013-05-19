@@ -19,7 +19,6 @@ def jump(entity, level):
 	if isOnGround(entity, level):
 		entity.ySpeed = -entity.attributes[Y_SPEED]
 		if isinstance(entity,Character):
-			print("Set Jump")
 			entity.jumping = True
 	else:
 		print ("Is not on ground")
@@ -37,3 +36,14 @@ def stopJump(entity):
 		if isinstance(entity,Character):
 			entity.jumping = False
 		entity.ySpeed = 0
+
+def will_collideX(player, future_rect, level):
+	if collision_detected(future_rect, level.get_left_blocks(player.rect)) or \
+	collision_detected(future_rect, level.get_right_blocks(player.rect)):
+		return True
+	return False
+
+def will_collideY(player, future_rect, level):
+	if collision_detected(future_rect, level.get_upper_blocks(player.rect)):
+		return True
+	return False
