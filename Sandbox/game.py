@@ -16,6 +16,7 @@ logger.debug("Start")
 
 pygame.init()
 
+
 while True:
 	level = Level()
 	screen_writer = ScreenWriter( level)
@@ -24,6 +25,8 @@ while True:
 	playerRect = player.rect
 	clock = pygame.time.Clock()
 	black = 0,0,0
+	first = True
+	print("Here")
 
 	while True:
 		clock.tick(50)
@@ -33,8 +36,10 @@ while True:
 
 		logger.debug("Handle input")
 		logger.info("Speed1: " + str([player.xSpeed, player.ySpeed]))
-		if handleInput(player, pygame.event.get(), level):
-			break
+		if not first:
+			if handleInput(player, pygame.event.get(), level):
+				break
+		first = False
 		logger.debug("Moving player")
 		logger.info("Rect1: " + str(player.rect))
 

@@ -11,6 +11,8 @@ def handleInput(player, events, level):
 			handleKeyUp(player, event)
 	ret = handleKeyDown(player, pygame.key.get_pressed(), level)
 	doMovement(player,level)
+	if not level.is_onscreen(level.map_to_arr(player.rect.midtop)):
+		return True
 	return ret
 
 def handleKeyDown(player, key, level):
