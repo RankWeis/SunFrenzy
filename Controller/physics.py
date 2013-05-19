@@ -8,7 +8,6 @@ def isOnGround(character, level):
 	blocks = level.get_bottom_blocks( character.rect)
 	return collision_detected(character.rect, blocks)
 
-
 def addGravity(characters, level):
 	gravity = .1
 	for character in characters:

@@ -54,11 +54,17 @@ while True:
 	temp_rectY = player.rect.copy().move([0,player.ySpeed])
 	xSpeed = 0
 	ySpeed = 0
+	xCollide = will_collideX(player, temp_rectX, level)
+	yCollide = will_collideY(player, temp_rectY, level)
+	
 
 
-	if not will_collideX(player, temp_rectX, level):
+	if xCollide:
+		if (xCollide > 0 and player.xSpeed < 0) or (xCollide < 0 and player.xSpeed > 0):
+			xSpeed = player.xSpeed
+	else:
 		xSpeed = player.xSpeed
-	if not will_collideY(player, temp_rectY, level):
+	if player.ySpeed > 0 or not yCollide:
 		ySpeed = player.ySpeed
 	"""
 	End controller bit

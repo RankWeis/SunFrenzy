@@ -73,7 +73,6 @@ class Level(object):
 			## Not the right way to do it, but I want to test ##
 			rect = pygame.Rect( x * blockSizeX, (y - 1) * blockSizeY, blockSizeX, blockSizeY)
 			self.player = Player( rect)
-			print("Player Rect is " + str(rect))
 			return self.player
 		else:
 			return Air( rect)

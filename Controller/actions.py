@@ -7,10 +7,7 @@ from Controller.physics import *
          moving forward"""
 def moveLeft(entity, level):
 	#Works if you tap left key but not if you hold
-	temp_rect = entity.rect.copy()
-	temp_rect.x = -entity.attributes[X_SPEED]
-	if not collision_detected(temp_rect, level.get_left_blocks(entity)):
-		entity.xSpeed = -entity.attributes[X_SPEED]
+	entity.xSpeed = -entity.attributes[X_SPEED]
 
 def moveRight(entity, level):
 	entity.xSpeed = entity.attributes[X_SPEED]
@@ -38,12 +35,12 @@ def stopJump(entity):
 		entity.ySpeed = 0
 
 def will_collideX(player, future_rect, level):
-	if collision_detected(future_rect, level.get_left_blocks(player.rect)) or \
-	collision_detected(future_rect, level.get_right_blocks(player.rect)):
-		return True
-	return False
+	if collision_detected(future_rect, level.get_left_blocks(player.rect)):
+		return -1
+	if collision_detected(future_rect, level.get_right_blocks(player.rect)):
+		return 1
 
 def will_collideY(player, future_rect, level):
 	if collision_detected(future_rect, level.get_upper_blocks(player.rect)):
-		return True
+		return 1
 	return False
