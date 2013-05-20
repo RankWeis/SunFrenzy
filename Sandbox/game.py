@@ -26,7 +26,6 @@ while True:
 	clock = pygame.time.Clock()
 	black = 0,0,0
 	first = True
-	print("Here")
 
 	while True:
 		clock.tick(50)

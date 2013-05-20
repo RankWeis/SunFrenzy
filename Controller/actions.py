@@ -46,7 +46,7 @@ def moveY(entity,level):
 			# Bounce back with some force
 			# Maybe this can be a property set by the block?
 			# i.e. bumpers in pinball
-			entity.ySpeed = 2
+			entity.ySpeed = -entity.ySpeed * .8
 		else:
 			entity.rect.bottom = collision.rect.top + 1
 	else:
@@ -59,7 +59,7 @@ def doMovement(entity,level):
 
 def jump(entity, level):
 	if isOnGround(entity, level):
-		entity.ySpeed = -entity.attributes[Y_SPEED]
+		entity.ySpeed = entity.ySpeed + -entity.attributes[Y_SPEED]
 		if isinstance(entity,Character):
 			entity.jumping = True
 

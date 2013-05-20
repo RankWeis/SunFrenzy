@@ -82,23 +82,31 @@ class Level(object):
 
 	def map_to_arr(self, xypos):
 		xRet = int(math.floor((xypos[0]) / blockSizeX))
-		yRet = int((math.floor((xypos[1]) + 5) / blockSizeY))
+		yRet = int((math.floor((xypos[1])) / blockSizeY))
 		return (xRet, yRet)
 
 	def get_surrounding_blocks(self, rect):
 		return self.get_blocks((rect.topleft, rect.bottomleft, rect.topright, rect.bottomright))
 
 	def get_bottom_blocks(self, rect):
-		return self.get_blocks((rect.midbottom,None))
+		bottomright = (rect.bottomright[0] - 2, rect.bottomright[1])
+		bottomleft = (rect.bottomleft[0] + 2, rect.bottomleft[1])
+		return self.get_blocks((rect.midbottom,bottomright,bottomleft))
 
 	def get_left_blocks(self, rect):
+		topleft = (rect.topleft[0],rect.topleft[1] + 2)
+		bottomleft = (rect.bottomleft[0], rect.bottomleft[1] - 2)
 		return self.get_blocks((rect.midleft, None))
 
 	def get_right_blocks(self, rect):
+		topright = (rect.topright[0],rect.topright[1] + 2)
+		bottomright = (rect.bottomright[0], rect.bottomright[1] - 2)
 		return self.get_blocks((rect.midright, None))
 
 	def get_upper_blocks(self, rect):
-		return self.get_blocks((rect.midtop,None))
+		topright = (rect.topright[0] - 2, rect.topright[1])
+		topleft = (rect.topleft[0] + 2, rect.topleft[1])
+		return self.get_blocks((rect.midtop,topright,topleft))
 
 
 	def get_blocks(self, check_blocks):
