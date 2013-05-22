@@ -30,7 +30,7 @@ while True:
 	while True:
 		clock.tick(50)
 
-		addGravity([player], level)
+		addGravity(level.movers, level)
 
 
 		logger.debug("Handle input")

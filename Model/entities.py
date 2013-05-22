@@ -36,13 +36,18 @@ class Character(Entity):
 
 
 class Enemy(Character):
-	def __init__(self, rect):
+		# Path should be something like back and forth (repeat), unobstructed, follow player (follow), shoot player (shoot)
+	def __init__(self, rect, starting_movement, path):
 		Character.__init__(self, rect)
 		self.total_hp = 8
+		self.xSpeed = starting_movement[0]
+		self.ySpeed = starting_movement[1]
+		self.path = path
 
-class SunSpot(Enemy):
-	def __init__(self,rect):
-		Enemy.__init__(self, rect)
+class Fire(Enemy):
+
+	def __init__(self,rect,starting_movement,path="repeat"):
+		Enemy.__init__(self, rect,starting_movement,path)
 
 class Player(Character):
 	def __init__(self, rect):
@@ -98,8 +103,9 @@ class Lava(Block):
 class Bullet(Entity):
 
 	'''speed is a 2d array [x, y]'''
-	def __init__(self, rect, speed):
+	def __init__(self, rect, speed,damage=1):
 		Entity.__init__(self, rect)
 		self.xSpeed = speed[0]
 		self.ySpeed = speed[1]
 		self.destroy_on_collide = True
+		self.damage = damage

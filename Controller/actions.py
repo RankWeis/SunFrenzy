@@ -21,11 +21,24 @@ def moveX(entity,level):
 		blocks = level.get_left_blocks(entity.rect)
 	else: return
 	future_rect = entity.rect.copy().move(move_amt,0)
+	### Do non collision based future calculations ###
+
+	if isinstance(entity,Enemy):
+		if entity.path == "repeat":
+			if not isOnGround(future_rect, level):
+				entity.xSpeed = -entity.xSpeed
+				return
+
+
+	### Do collision based future calculations ###
 	collision = collision_detected(future_rect, blocks)
 	if collision:
 		if entity.destroy_on_collide:
 			level.movers.remove(entity)
 			return
+		if isinstance(entity,Enemy):
+			if entity.path == "unobstructed" or entity.path == "repeat":
+				entity.xSpeed = -entity.xSpeed
 		if move_amt < 0:
 			entity.rect.left = collision.rect.right - 1
 		else:
@@ -44,6 +57,7 @@ def moveY(entity,level):
 	else: return
 	future_rect = entity.rect.copy().move(0, move_amt)
 	collision = collision_detected(future_rect, blocks)
+	## There's gonna be way too much shit in this if, gotta find a better way to handle this ##
 	if collision:
 		if entity.destroy_on_collide:
 			level.movers.remove(entity)
@@ -69,7 +83,7 @@ def doMovement(entity,level):
 
 
 def jump(entity, level):
-	if isOnGround(entity, level):
+	if isOnGround(entity.rect, level):
 		entity.ySpeed = entity.ySpeed + -entity.attributes[Y_SPEED]
 		if isinstance(entity,Character):
 			entity.jumping = True

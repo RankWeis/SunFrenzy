@@ -4,14 +4,14 @@ from Model.entities import *
 #      the player speed takes them past the top of a block, for example,
 #	   it won't work. There's a hack in game.py that fixes this right now
 
-def isOnGround(character, level):
-	blocks = level.get_bottom_blocks( character.rect)
-	return collision_detected(character.rect, blocks)
+def isOnGround(rect, level):
+	blocks = level.get_bottom_blocks( rect)
+	return collision_detected(rect, blocks)
 
 def addGravity(characters, level):
 	gravity = .1
 	for character in characters:
-		if not isOnGround(character, level):
+		if not isOnGround(character.rect, level):
 			character.ySpeed += gravity
 		else:
 			character.ySpeed = 0

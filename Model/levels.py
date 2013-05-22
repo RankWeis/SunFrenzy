@@ -62,7 +62,7 @@ class Level(object):
 
 	def char_to_ent(self, entity_char, x, y ):
 		rect = pygame.Rect( x * blockSizeX, y * blockSizeY, blockSizeX, blockSizeY )
-		if entity_char == 'W' or entity_char == 'G' or entity_char == 'B':
+		if entity_char == 'W' or entity_char == 'G' or entity_char == 'B' or entity_char == 'I':
 			block = SolidBlock(rect)
 			if not self.collidable_blocks:
 				self.collidable_blocks = [block]
@@ -71,13 +71,22 @@ class Level(object):
 			return block
 		elif entity_char == 'S':
 			## Not the right way to do it, but I want to test ##
-			rect = pygame.Rect( x * blockSizeX, (y - 1) * blockSizeY, blockSizeX, blockSizeY)
+			rect = pygame.Rect( x * blockSizeX, y  * blockSizeY, blockSizeX, blockSizeY)
 			self.player = Player( rect)
 			try:
 				self.movers.append(self.player)
 			except AttributeError:
 				self.movers = [self.player]
-			return self.player
+			return Air( rect)
+		elif entity_char == 'E':
+			# Only one enemy right now, but should develop a system to determine type
+			rect = pygame.Rect( x * blockSizeX, y * blockSizeY + blockSizeY/2 , blockSizeX/2, blockSizeY/2)
+			enemy = Fire(rect,(1,0))
+			try:
+				self.movers.append(enemy)
+			except AttributeError:
+				self.movers = [enemy]
+			return Air(rect)
 		else:
 			return Air( rect)
 
