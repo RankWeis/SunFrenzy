@@ -18,24 +18,28 @@ playerFile="snowman.bmp"
 lavaFile="lava.jpg"
 bulletFile="bullet.png"
 fireFile="fire.png"
+iceFile="ice.png"
 
 class SpriteMapper(object):
 
 	def __init__(self):
 		image = pygame.image.load( os.path.join(imagesLocation,blockFile))
 		self.block_img = pygame.transform.scale( image, (40, 40))
+		self.invisible_block_img = self.block_img
 		image = pygame.image.load( os.path.join(imagesLocation, playerFile))
 		self.player_img = pygame.transform.scale( image, (40, 40))
 		image = pygame.image.load( os.path.join(imagesLocation, bulletFile))
 		self.bullet_img = pygame.transform.scale( image, (5,5))
 		image = pygame.image.load( os.path.join(imagesLocation, fireFile))
 		self.fire_img = pygame.transform.scale(image, (20,20))
+		image = pygame.image.load( os.path.join(imagesLocation, iceFile))
+		self.ice_img = pygame.transform.scale(image, (40,40))
 
 	def get_sprite(self, entity):
 		entity_class = type(entity)
 		if entity_class == Player:
 			return self.get_player_sprite(entity)
-		if entity_class == SolidBlock:
+		if entity_class == SolidBlock or entity_class == InvisibleBlock:
 			return self.get_block_sprite(entity)
 		if entity_class == Lava:
 			return self.get_lava_sprite(entity)
@@ -43,6 +47,8 @@ class SpriteMapper(object):
 			return self.get_bullet_sprite(entity)
 		if entity_class == Fire:
 			return self.get_fire_sprite(entity)
+		if entity_class == Ice:
+			return self.get_ice_sprite(entity)
 
 	def get_bullet_sprite(self, entity):
 		return self.bullet_img
@@ -61,3 +67,6 @@ class SpriteMapper(object):
 
 	def get_fire_sprite(self,entity):
 		return self.fire_img
+
+	def get_ice_sprite(self,entity):
+		return self.ice_img

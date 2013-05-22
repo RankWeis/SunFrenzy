@@ -26,7 +26,7 @@ class ScreenWriter(object):
 				continue
 			for entity in entityList:
 				image = self.mapper.get_sprite( entity)
-				if not image:
+				if not image or not entity.is_visible:
 					continue
 				self.screen.blit(image, entity.rect)
 		clock = pygame.time.Clock()

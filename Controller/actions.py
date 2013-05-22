@@ -13,14 +13,14 @@ def moveRight(entity, level):
 	entity.xSpeed = entity.attributes[X_SPEED]
 
 def moveX(entity,level):
-	move_amt = entity.xSpeed
+	move_amt = round(entity.xSpeed * level.tickseconds)
 	blocks = None
 	if move_amt > 0:
 		blocks = level.get_right_blocks(entity.rect)
 	elif move_amt < 0:
 		blocks = level.get_left_blocks(entity.rect)
 	else: return
-	future_rect = entity.rect.copy().move(move_amt,0)
+	future_rect = entity.rect.move(move_amt,0)
 	### Do non collision based future calculations ###
 
 	if isinstance(entity,Enemy):
@@ -44,22 +44,24 @@ def moveX(entity,level):
 		else:
 			entity.rect.right = collision.rect.left + 1
 	else:
-		entity.xSpeed = move_amt
+		# entity.xSpeed = move_amt
+		if not (move_amt < .1 and move_amt > -.1):
+			entity.direction = entity.xSpeed
 		entity.rect = future_rect
 
 def moveY(entity,level):
-	move_amt = entity.ySpeed
+	move_amt = round(entity.ySpeed * level.tickseconds)
 	blocks = None
 	if move_amt > 0:
 		blocks = level.get_bottom_blocks(entity.rect)
 	elif move_amt < 0:
 		blocks = level.get_upper_blocks(entity.rect)
 	else: return
-	future_rect = entity.rect.copy().move(0, move_amt)
+	future_rect = entity.rect.move(0, move_amt)
 	collision = collision_detected(future_rect, blocks)
 	## There's gonna be way too much shit in this if, gotta find a better way to handle this ##
 	if collision:
-		if entity.destroy_on_collide:
+		if entity.destroy_on_collide and entity in level.movers:
 			level.movers.remove(entity)
 			return
 		if move_amt < 0:
@@ -74,12 +76,13 @@ def moveY(entity,level):
 		entity.rect = future_rect
 
 def shoot(entity, level):
+	xDir = int( entity.direction / abs(entity.direction) )
 	bulletXY = pygame.Rect(entity.rect.x+2,entity.rect.y + 10, 5, 5)
-	level.movers.append( Bullet(bulletXY, (10,0)))
+	level.movers.append( Bullet(bulletXY, xDir))
 
-def doMovement(entity,level):
-	moveX(entity,level)
+def doMovement(entity,level):		
 	moveY(entity,level)
+	moveX(entity,level)
 
 
 def jump(entity, level):

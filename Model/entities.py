@@ -6,20 +6,25 @@ class Entity(object):
 	def __init__(self, rect):
 		self.rect = rect
 		self.destroy_on_collide = False
+		self.is_visible = True
 		self.attributes = Attributes()
 
+	def notify(self, level):
+		pass
+
 """
-The base for characters
+The base for characters.
 """
 
 class Character(Entity):
 
 	def __init__(self, rect):
-		self.total_hp = 1
-		self.hp = 1
+		self.total_hp = 10
+		self.hp = 10
 		self.xSpeed = 0
 		self.ySpeed = 0
 		self.jumping=False
+		self.direction = 1
 		Entity.__init__(self, rect)
 		
 	def get_hp(self):
@@ -40,6 +45,7 @@ class Enemy(Character):
 	def __init__(self, rect, starting_movement, path):
 		Character.__init__(self, rect)
 		self.total_hp = 8
+		self.hp = self.total_hp
 		self.xSpeed = starting_movement[0]
 		self.ySpeed = starting_movement[1]
 		self.path = path
@@ -69,10 +75,6 @@ class Block(Entity):
 
 	def __init__(self, rect):
 		Entity.__init__(self, rect)
-		self.aboveBlock = None
-		self.belowBlock = None
-		self.leftBlock = None
-		self.rightBlock = None
 
 class SolidBlock(Block):
 
@@ -82,6 +84,24 @@ class SolidBlock(Block):
 	def is_deadly(self):
 		return False
 
+class InvisibleBlock(SolidBlock):
+
+	def __init__(self,rect):
+		SolidBlock.__init__(self,rect)
+		self.is_visible = False
+		self.permeable = True
+
+	def is_permeable(self):
+		return self.permeable
+
+	def is_deadly(self):
+		return False
+
+	def notify(self,level):
+		if not level.has_enemies():
+			self.is_visible = True
+			self.permeable = False
+
 class Air(Block):
 
 	def is_permeable(self):
@@ -89,6 +109,9 @@ class Air(Block):
 
 	def is_deadly(self):
 		return False
+
+class Ice(SolidBlock):
+	pass
 
 class Lava(Block):
 
@@ -100,7 +123,7 @@ class Lava(Block):
 
 """End of Blocks"""
 
-class Bullet(Entity):
+class Projectile(Entity):
 
 	'''speed is a 2d array [x, y]'''
 	def __init__(self, rect, speed,damage=1):
@@ -109,3 +132,8 @@ class Bullet(Entity):
 		self.ySpeed = speed[1]
 		self.destroy_on_collide = True
 		self.damage = damage
+
+class Bullet(Projectile):
+
+	def __init__(self, rect, direction):
+		Projectile.__init__(self, rect, (500 * direction, 0))

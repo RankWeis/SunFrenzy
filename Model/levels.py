@@ -37,9 +37,11 @@ level1 = [
 class Level(object):
 
 	def __init__(self):
-		self.collidable_blocks = None
 		self.curr_lvl = self.get_level1()
 		self.curr_lvl_str = level1
+
+		# Time since last refresh
+		self.tickseconds = 0
 
 	def level_ingestor(self, level):
 		self.blocks = [ None for x in range(len(level) * len(level[0]))]
@@ -62,12 +64,15 @@ class Level(object):
 
 	def char_to_ent(self, entity_char, x, y ):
 		rect = pygame.Rect( x * blockSizeX, y * blockSizeY, blockSizeX, blockSizeY )
-		if entity_char == 'W' or entity_char == 'G' or entity_char == 'B' or entity_char == 'I':
-			block = SolidBlock(rect)
-			if not self.collidable_blocks:
-				self.collidable_blocks = [block]
+		if entity_char == 'W' or entity_char == 'G' or entity_char == 'B' or entity_char == 'I' or entity_char == 'F':
+			block = None
+			if entity_char == 'I':
+				block = InvisibleBlock(rect)
+			elif entity_char == 'F':
+				block = Ice(rect)
+				self.final_block = block
 			else:
-				self.collidable_blocks.append(block)
+				block = SolidBlock(rect)
 			return block
 		elif entity_char == 'S':
 			## Not the right way to do it, but I want to test ##
@@ -80,8 +85,8 @@ class Level(object):
 			return Air( rect)
 		elif entity_char == 'E':
 			# Only one enemy right now, but should develop a system to determine type
-			rect = pygame.Rect( x * blockSizeX, y * blockSizeY + blockSizeY/2 , blockSizeX/2, blockSizeY/2)
-			enemy = Fire(rect,(1,0))
+			rect = pygame.Rect( x * blockSizeX, y * blockSizeY + blockSizeY/2 + 1, blockSizeX/2, blockSizeY/2)
+			enemy = Fire(rect,(50,0))
 			try:
 				self.movers.append(enemy)
 			except AttributeError:
@@ -102,23 +107,23 @@ class Level(object):
 		return self.get_blocks((rect.topleft, rect.bottomleft, rect.topright, rect.bottomright))
 
 	def get_bottom_blocks(self, rect):
-		bottomright = (rect.bottomright[0] - 2, rect.bottomright[1])
-		bottomleft = (rect.bottomleft[0] + 2, rect.bottomleft[1])
+		bottomright = (rect.bottomright[0] - 2, rect.bottomright[1] + 2)
+		bottomleft = (rect.bottomleft[0] + 2, rect.bottomleft[1] + 2)
 		return self.get_blocks((rect.midbottom,bottomright,bottomleft))
 
 	def get_left_blocks(self, rect):
-		topleft = (rect.topleft[0],rect.topleft[1] + 2)
-		bottomleft = (rect.bottomleft[0], rect.bottomleft[1] - 2)
-		return self.get_blocks((rect.midleft, None))
+		topleft = (rect.topleft[0] - 2,rect.topleft[1] + 2)
+		bottomleft = (rect.bottomleft[0] - 2, rect.bottomleft[1] - 2)
+		return self.get_blocks((rect.midleft, bottomleft, topleft))
 
 	def get_right_blocks(self, rect):
-		topright = (rect.topright[0],rect.topright[1] + 2)
-		bottomright = (rect.bottomright[0], rect.bottomright[1] - 2)
-		return self.get_blocks((rect.midright, None))
+		topright = (rect.topright[0] + 2,rect.topright[1] + 2)
+		bottomright = (rect.bottomright[0] + 2, rect.bottomright[1] - 2)
+		return self.get_blocks((rect.midright, bottomright, topright))
 
 	def get_upper_blocks(self, rect):
-		topright = (rect.topright[0] - 2, rect.topright[1])
-		topleft = (rect.topleft[0] + 2, rect.topleft[1])
+		topright = (rect.topright[0] - 2, rect.topright[1] + 2)
+		topleft = (rect.topleft[0] + 2, rect.topleft[1] + 2)
 		return self.get_blocks((rect.midtop,topright,topleft))
 
 
@@ -151,4 +156,17 @@ class Level(object):
 			if loc[0] >= 0 and loc[0] < len(self.curr_lvl_str[0]):
 				return True
 		return False
+
+	def has_enemies(self):
+		for ent in self.movers:
+			if isinstance(ent,Enemy):
+				return True
+		return False
+
+	def notify_all(self):
+		for entity in self.get_sprites():
+			entity.notify(self)
+
+	def won_level(self):
+		return self.player.rect.colliderect(self.final_block.rect)
 
