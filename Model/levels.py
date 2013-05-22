@@ -73,6 +73,10 @@ class Level(object):
 			## Not the right way to do it, but I want to test ##
 			rect = pygame.Rect( x * blockSizeX, (y - 1) * blockSizeY, blockSizeX, blockSizeY)
 			self.player = Player( rect)
+			try:
+				self.movers.append(self.player)
+			except AttributeError:
+				self.movers = [self.player]
 			return self.player
 		else:
 			return Air( rect)
@@ -124,6 +128,14 @@ class Level(object):
 			if not isinstance(blk,Player):
 				ret.append(blk)
 		return ret
+
+	def get_sprites(self):
+		lvl = list(self.curr_lvl)
+		for mover in self.movers:
+			if mover not in lvl:
+				lvl.append(mover)
+		return lvl
+
 
 	def is_onscreen(self, loc):
 		if loc[1] >= 0 and loc[1] < len(self.curr_lvl_str):

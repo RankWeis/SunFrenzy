@@ -16,6 +16,7 @@ blockFile="block.jpg"
 sunspotFile="block.jpg"
 playerFile="snowman.bmp"
 lavaFile="lava.jpg"
+bulletFile="bullet.png"
 
 class SpriteMapper(object):
 
@@ -24,6 +25,8 @@ class SpriteMapper(object):
 		self.block_img = pygame.transform.scale( image, (40, 40))
 		image = pygame.image.load( os.path.join(imagesLocation, playerFile))
 		self.player_img = pygame.transform.scale( image, (40, 40))
+		image = pygame.image.load( os.path.join(imagesLocation, bulletFile))
+		self.bullet_img = pygame.transform.scale( image, (5,5))
 
 	def get_sprite(self, entity):
 		entity_class = type(entity)
@@ -35,6 +38,11 @@ class SpriteMapper(object):
 			return self.get_sunspot_sprite(entity)
 		if entity_class == Lava:
 			return self.get_lava_sprite(entity)
+		if entity_class == Bullet:
+			return self.get_bullet_sprite(entity)
+
+	def get_bullet_sprite(self, entity):
+		return self.bullet_img
 
 	def get_player_sprite(self, entity):
 		return self.player_img

@@ -39,11 +39,15 @@ while True:
 			if handleInput(player, pygame.event.get(), level):
 				break
 		first = False
-		logger.debug("Moving player")
+
+		for entity in level.movers:
+			doMovement(entity,level)
+		if not level.is_onscreen(level.map_to_arr(player.rect.midtop)):
+			break
 		logger.info("Rect1: " + str(player.rect))
 
 		logger.debug("Draw")
 		screen.fill(black)
-		screen_writer.drawLevel()
+		screen_writer.drawLevel(level)
 		pygame.display.flip()
 

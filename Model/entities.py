@@ -5,6 +5,7 @@ class Entity(object):
 
 	def __init__(self, rect):
 		self.rect = rect
+		self.destroy_on_collide = False
 		self.attributes = Attributes()
 
 """
@@ -99,4 +100,6 @@ class Bullet(Entity):
 	'''speed is a 2d array [x, y]'''
 	def __init__(self, rect, speed):
 		Entity.__init__(self, rect)
-		self.speed = speed
+		self.xSpeed = speed[0]
+		self.ySpeed = speed[1]
+		self.destroy_on_collide = True

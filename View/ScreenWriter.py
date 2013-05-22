@@ -31,6 +31,6 @@ class ScreenWriter(object):
 				self.screen.blit(image, entity.rect)
 		clock = pygame.time.Clock()
 
-	def drawLevel(self):
-		level1 = {0 : self.level.curr_lvl, 1:None, 2:None,3:None,4:None }
+	def drawLevel(self, level):
+		level1 = {0 : level.get_sprites(), 1:None, 2:None,3:None,4:None }
 		self.drawScreen(level1)

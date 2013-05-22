@@ -8,12 +8,9 @@ def handleInput(player, events, level):
 		if event.type == pygame.QUIT:
 			sys.exit()
 		elif event.type == pygame.KEYUP:
-			handleKeyUp(player, event)
+			handleKeyUp(player, event, level)
 	ret = handleKeyDown(player, pygame.key.get_pressed(), level)
-	doMovement(player,level)
-	if not level.is_onscreen(level.map_to_arr(player.rect.midtop)):
-		return True
-	return ret
+	
 
 def handleKeyDown(player, key, level):
 	if key[pygame.K_LEFT]:
@@ -27,9 +24,11 @@ def handleKeyDown(player, key, level):
 	if key[pygame.K_ESCAPE]:
 		sys.exit()
 
-def handleKeyUp(player, event):
+def handleKeyUp(player, event, level):
 	if event.key == pygame.K_LEFT:
 		stopMoveLeft(player)
+	if event.key == pygame.K_RSHIFT or event.key == pygame.K_LSHIFT:
+		shoot(player, level)
 	elif event.key == pygame.K_RIGHT:
 		stopMoveRight(player)
 	elif event.key == pygame.K_UP:
