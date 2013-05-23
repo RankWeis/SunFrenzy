@@ -1,5 +1,5 @@
 from Model.attributes import *
-import logging
+import logging, time
 
 class Entity(object):
 
@@ -25,6 +25,8 @@ class Character(Entity):
 		self.ySpeed = 0
 		self.jumping=False
 		self.direction = 1
+		self.lastShot = 0
+		self.weapon = Gun(self) # Temporary, eventually want to find first gun maybe?
 		Entity.__init__(self, rect)
 		
 	def get_hp(self):
@@ -123,17 +125,8 @@ class Lava(Block):
 
 """End of Blocks"""
 
-class Projectile(Entity):
 
-	'''speed is a 2d array [x, y]'''
-	def __init__(self, rect, speed,damage=1):
-		Entity.__init__(self, rect)
-		self.xSpeed = speed[0]
-		self.ySpeed = speed[1]
-		self.destroy_on_collide = True
-		self.damage = damage
 
-class Bullet(Projectile):
+from Model.weapons import *
 
-	def __init__(self, rect, direction):
-		Projectile.__init__(self, rect, (500 * direction, 0))
+

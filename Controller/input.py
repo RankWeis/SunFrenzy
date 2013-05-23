@@ -19,16 +19,18 @@ def handleKeyDown(player, key, level):
 		moveRight(player, level)
 	if key[pygame.K_UP]:
 		jump(player, level)
+	if key[pygame.K_RSHIFT] or key[pygame.K_LSHIFT]:
+		shoot(player, level)
 	if key[pygame.K_r]:
 		return True
+	if key[pygame.K_1] or key[pygame.K_2] or key[pygame.K_3] or key[pygame.K_4]:
+		switch_weapons(player,key)
 	if key[pygame.K_ESCAPE]:
 		sys.exit()
 
 def handleKeyUp(player, event, level):
 	if event.key == pygame.K_LEFT:
 		stopMoveLeft(player)
-	if event.key == pygame.K_RSHIFT or event.key == pygame.K_LSHIFT:
-		shoot(player, level)
 	elif event.key == pygame.K_RIGHT:
 		stopMoveRight(player)
 	elif event.key == pygame.K_UP:

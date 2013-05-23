@@ -28,14 +28,11 @@ def moveX(entity,level):
 			if not isOnGround(future_rect, level):
 				entity.xSpeed = -entity.xSpeed
 				return
-
-
 	### Do collision based future calculations ###
 	collision = collision_detected(future_rect, blocks)
 	if collision:
-		if entity.destroy_on_collide:
-			level.movers.remove(entity)
-			return
+		if isinstance(entity,Projectile):
+			entity.on_collision(level)
 		if isinstance(entity,Enemy):
 			if entity.path == "unobstructed" or entity.path == "repeat":
 				entity.xSpeed = -entity.xSpeed
@@ -48,6 +45,8 @@ def moveX(entity,level):
 		if not (move_amt < .1 and move_amt > -.1):
 			entity.direction = entity.xSpeed
 		entity.rect = future_rect
+		if isinstance(entity,Projectile):
+			entity.on_move((move_amt,0), level)
 
 def moveY(entity,level):
 	move_amt = round(entity.ySpeed * level.tickseconds)
@@ -61,9 +60,8 @@ def moveY(entity,level):
 	collision = collision_detected(future_rect, blocks)
 	## There's gonna be way too much shit in this if, gotta find a better way to handle this ##
 	if collision:
-		if entity.destroy_on_collide and entity in level.movers:
-			level.movers.remove(entity)
-			return
+		if isinstance(entity,Projectile):
+			entity.on_collision(level)
 		if move_amt < 0:
 			entity.rect.top = collision.rect.bottom - 1
 			# Bounce back with some force
@@ -74,11 +72,14 @@ def moveY(entity,level):
 			entity.rect.bottom = collision.rect.top + 1
 	else:
 		entity.rect = future_rect
+		if isinstance(entity,Projectile):
+			entity.on_move((move_amt,0), level)
 
 def shoot(entity, level):
-	xDir = int( entity.direction / abs(entity.direction) )
-	bulletXY = pygame.Rect(entity.rect.x+2,entity.rect.y + 10, 5, 5)
-	level.movers.append( Bullet(bulletXY, xDir))
+	if entity.weapon:
+		bullet =  entity.weapon.fire()
+		if bullet:
+			level.movers.append( bullet)
 
 def doMovement(entity,level):		
 	moveY(entity,level)
@@ -104,3 +105,13 @@ def stopJump(entity):
 		if isinstance(entity,Character):
 			entity.jumping = False
 		entity.ySpeed = 0
+
+def switch_weapons(player,key):
+	if key[pygame.K_1]:
+		player.weapon = Gun(player)
+	if key[pygame.K_2]:
+		player.weapon = Gun(player,Bullet)
+	if key[pygame.K_3]:
+		player.weapon = Gun(player,Exploder)
+	if key[pygame.K_4]:
+		player.weapon = Gun(player,Missile)

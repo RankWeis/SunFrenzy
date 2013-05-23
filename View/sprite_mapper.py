@@ -49,6 +49,14 @@ class SpriteMapper(object):
 			return self.get_fire_sprite(entity)
 		if entity_class == Ice:
 			return self.get_ice_sprite(entity)
+		if entity_class == Exploder:
+			return self.get_bullet_sprite(entity)
+		if entity_class == Missile:
+			return self.get_bullet_sprite(entity)
+		if entity_class == Snowball:
+			return self.get_bullet_sprite(entity)
+
+
 
 	def get_bullet_sprite(self, entity):
 		return self.bullet_img
