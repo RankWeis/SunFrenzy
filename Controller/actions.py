@@ -15,12 +15,13 @@ def moveRight(entity, level):
 def moveX(entity,level):
 	move_amt = round(entity.xSpeed * level.tickseconds)
 	blocks = None
-	if move_amt > 0:
-		blocks = level.get_right_blocks(entity.rect)
-	elif move_amt < 0:
-		blocks = level.get_left_blocks(entity.rect)
-	else: return
 	future_rect = entity.rect.move(move_amt,0)
+	if move_amt > 0:
+		blocks = level.get_right_blocks(future_rect)
+	elif move_amt < 0:
+		blocks = level.get_left_blocks(future_rect)
+	else: return
+	
 	### Do non collision based future calculations ###
 
 	if isinstance(entity,Enemy):
@@ -51,12 +52,13 @@ def moveX(entity,level):
 def moveY(entity,level):
 	move_amt = round(entity.ySpeed * level.tickseconds)
 	blocks = None
-	if move_amt > 0:
-		blocks = level.get_bottom_blocks(entity.rect)
-	elif move_amt < 0:
-		blocks = level.get_upper_blocks(entity.rect)
-	else: return
 	future_rect = entity.rect.move(0, move_amt)
+	if move_amt > 0:
+		blocks = level.get_bottom_blocks(future_rect)
+	elif move_amt < 0:
+		blocks = level.get_upper_blocks(future_rect)
+	else: return
+
 	collision = collision_detected(future_rect, blocks)
 	## There's gonna be way too much shit in this if, gotta find a better way to handle this ##
 	if collision:
@@ -67,7 +69,7 @@ def moveY(entity,level):
 			# Bounce back with some force
 			# Maybe this can be a property set by the block?
 			# i.e. bumpers in pinball
-			entity.ySpeed = -entity.ySpeed * .8
+			entity.ySpeed = -2
 		else:
 			entity.rect.bottom = collision.rect.top + 1
 	else:

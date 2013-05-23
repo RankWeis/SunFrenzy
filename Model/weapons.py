@@ -26,7 +26,7 @@ class Projectile(Entity):
 class Snowball(Projectile):
 
 	def __init__(self, rect, direction):
-		Projectile.__init__(self, rect, (500 * direction, 0))
+		Projectile.__init__(self, rect, (250 * direction, 0))
 
 class Bullet(Projectile):
 

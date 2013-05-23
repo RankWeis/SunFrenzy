@@ -52,7 +52,7 @@ while True:
 		logger.debug("Checking if won")
 		if level.won_level():
 			print("WINNER!!")
-			myfont = pygame.font.SysFont("Comic Sans MS", 30)
+			myfont = pygame.font.SysFont("Times", 30)
 			label = myfont.render("You won!", 1, (255,0,0))
 			screen_writer.drawLevel(level)
 			screen.blit(label, (100,100))

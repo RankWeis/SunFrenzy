@@ -9,14 +9,15 @@ def isOnGround(rect, level):
 	return collision_detected(rect, blocks)
 
 def addGravity(characters, level):
-	gravity = 5
+	gravity = 300
 	for character in characters:
 		if not isOnGround(character.rect, level):
-			character.ySpeed += gravity
+			character.ySpeed += gravity * level.tickseconds
 		else:
 			character.ySpeed = 0
 
 def collision_detected(rect, blocks):
+	if not blocks: return
 	for block in blocks:
 		if (isinstance(block, Player)): 
 			continue

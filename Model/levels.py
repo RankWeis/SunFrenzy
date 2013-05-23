@@ -103,9 +103,6 @@ class Level(object):
 		yRet = int((math.floor((xypos[1])) / blockSizeY))
 		return (xRet, yRet)
 
-	def get_surrounding_blocks(self, rect):
-		return self.get_blocks((rect.topleft, rect.bottomleft, rect.topright, rect.bottomright))
-
 	def get_bottom_blocks(self, rect):
 		bottomright = (rect.bottomright[0] - 2, rect.bottomright[1] + 2)
 		bottomleft = (rect.bottomleft[0] + 2, rect.bottomleft[1] + 2)
