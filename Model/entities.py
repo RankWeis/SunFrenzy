@@ -12,6 +12,9 @@ class Entity(object):
 	def notify(self, level):
 		pass
 
+	def getrect(self):
+		return self.rect
+
 """
 The base for characters.
 """
@@ -62,6 +65,10 @@ class Player(Character):
 	def __init__(self, rect):
 		Character.__init__(self, rect)
 		self.total_hp = 10
+		self.xdiff = 0
+
+	def getrect(self):
+		return self.rect.move(self.xdiff,0)
 
 """
 The base for backgrounds. Backgrounds can be

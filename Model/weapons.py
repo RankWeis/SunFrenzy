@@ -104,10 +104,10 @@ class Weapon(object):
 		if time - self.last_fired > self.recharge_speed:
 			self.last_fired = time
 			xDir = int( self.owner.direction / abs(self.owner.direction) )
-			startX = self.owner.rect.left - 2
+			startX = self.owner.getrect().left - 2
 			if xDir > 0:
-				startX = self.owner.rect.right + 2
-			bulletXY = pygame.Rect(startX,self.owner.rect.y + 10, 5, 5)
+				startX = self.owner.getrect().right + 2
+			bulletXY = pygame.Rect(startX,self.owner.getrect().y + 10, 5, 5)
 			return self.ammo_type(bulletXY, xDir, self.owner)
 		else:
 			return False

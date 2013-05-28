@@ -15,7 +15,7 @@ def moveRight(entity, level):
 def moveX(entity,level):
 	move_amt = round(entity.xSpeed * level.tickseconds)
 	blocks = None
-	future_rect = entity.rect.move(move_amt,0)
+	future_rect = entity.getrect().move(move_amt,0)
 	if move_amt > 0:
 		blocks = level.get_right_blocks(future_rect)
 	elif move_amt < 0:
@@ -38,21 +38,31 @@ def moveX(entity,level):
 			if entity.path == "unobstructed" or entity.path == "repeat":
 				entity.xSpeed = -entity.xSpeed
 		if move_amt < 0:
-			entity.rect.left = collision.rect.right - 1
+			if entity == level.player:
+				return
+			else:
+				entity.rect.left = collision.rect.right - 1
 		else:
-			entity.rect.right = collision.rect.left + 1
+			if entity == level.player:
+				return
+			else:
+				entity.rect.right = collision.rect.left + 1
 	else:
 		# entity.xSpeed = move_amt
-		if not (move_amt < .1 and move_amt > -.1):
+		if not move_amt == 0:
 			entity.direction = entity.xSpeed
-		entity.rect = future_rect
+
+		if isinstance(entity,Player):
+			entity.xdiff += move_amt
+		else:
+			entity.rect = future_rect
 		if isinstance(entity,Projectile):
 			entity.on_move((move_amt,0), level)
 
 def moveY(entity,level):
 	move_amt = round(entity.ySpeed * level.tickseconds)
 	blocks = None
-	future_rect = entity.rect.move(0, move_amt)
+	future_rect = entity.getrect().move(0, move_amt)
 	if move_amt > 0:
 		blocks = level.get_bottom_blocks(future_rect)
 	elif move_amt < 0:
@@ -73,7 +83,7 @@ def moveY(entity,level):
 		else:
 			entity.rect.bottom = collision.rect.top + 1
 	else:
-		entity.rect = future_rect
+		entity.rect = entity.rect.move(0,move_amt)
 		if isinstance(entity,Projectile):
 			entity.on_move((move_amt,0), level)
 
@@ -89,7 +99,7 @@ def doMovement(entity,level):
 
 
 def jump(entity, level):
-	if isOnGround(entity.rect, level):
+	if isOnGround(entity.getrect(), level):
 		entity.ySpeed = entity.ySpeed + -entity.attributes[Y_SPEED]
 		if isinstance(entity,Character):
 			entity.jumping = True

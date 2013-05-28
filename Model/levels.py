@@ -34,11 +34,25 @@ level1 = [
 "WGGGGGG  GGG     GGGGW"
 ]
 
+level2 = [
+"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+"W                                         W",
+"W                                         W",
+"W F   E                                   W",
+"W  BBBBB   II   BB     BB     BB     BB   W",
+"W                                         W",
+"W                  BB     BB     BB     BBW",
+"W  S                                      W",
+"WGGGGGG  GGG     GGGGW  GGGGW  GGGGW  GGGGW",
+"WGGGGGG  GGG     GGGGW  GGGGW  GGGGW  GGGGW",
+"WGGGGGG  GGG     GGGGW  GGGGW  GGGGW  GGGGW"
+]
+
 class Level(object):
 
 	def __init__(self):
-		self.curr_lvl = self.get_level1()
-		self.curr_lvl_str = level1
+		self.curr_lvl = self.get_level2()
+		self.curr_lvl_str = level2
 
 		# Time since last refresh
 		self.tickseconds = 0
@@ -49,7 +63,7 @@ class Level(object):
 		i = 0
 		for y in range(len(level)):
 			for x in range(len(level[y])):
-				curr_blk = self.char_to_ent( level1[y][x], x, y)
+				curr_blk = self.char_to_ent( level[y][x], x, y)
 				self.blocks_rep[y][x] = curr_blk
 				self.blocks[i] = curr_blk
 				if x != 0:
@@ -97,6 +111,9 @@ class Level(object):
 
 	def get_level1(self):
 		return self.level_ingestor(level1)
+
+	def get_level2(self):
+		return self.level_ingestor(level2)
 
 	def map_to_arr(self, xypos):
 		xRet = int(math.floor((xypos[0]) / blockSizeX))
@@ -146,7 +163,6 @@ class Level(object):
 			if mover not in lvl:
 				lvl.append(mover)
 		return lvl
-
 
 	def is_onscreen(self, loc):
 		if loc[1] >= 0 and loc[1] < len(self.curr_lvl_str):

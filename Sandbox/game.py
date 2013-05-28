@@ -55,7 +55,7 @@ while True:
 			screen_writer.drawLevel(level)
 			screen.blit(label, (100,100))
 			pygame.display.flip()
-			time.sleep(5)
+			time.sleep(3)
 			break
 		if level.lost():
 			myfont = pygame.font.SysFont("Times", 30)

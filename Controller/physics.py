@@ -11,7 +11,10 @@ def isOnGround(rect, level):
 def addGravity(characters, level):
 	gravity = 300
 	for character in characters:
-		if not isOnGround(character.rect, level):
+		rect = character.rect
+		if character == level.player:
+			rect = rect.move(character.xdiff,0)
+		if not isOnGround(rect, level):
 			character.ySpeed += gravity * level.tickseconds
 		else:
 			character.ySpeed = 0
@@ -43,7 +46,10 @@ def movers_collisions(level):
 		# 	continue
 		for defender in movers:
 			if attacker == defender or not isinstance(defender,Character): continue
-			if attacker.rect.colliderect(defender.rect):
+			rect = defender.rect
+			if defender == level.player:
+				rect = defender.rect.move(defender.xdiff,0)
+			if attacker.rect.colliderect(rect):
 				if isinstance(attacker,Projectile):
 					if isinstance(defender,Character):
 						# No Friendly fire
@@ -53,7 +59,6 @@ def movers_collisions(level):
 						level.movers.remove(attacker)
 				if isinstance(attacker,Enemy):
 					if isinstance(defender,Player):
-						print("Player HP:",defender.hp)
 						defender.hp -= attacker.damage
 
 			if defender.hp <= 0 and defender in level.movers:

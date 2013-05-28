@@ -17,6 +17,7 @@ class ScreenWriter(object):
 
 	def drawScreen(self, entityDict):
 		self.screen.fill(self.BLACK)
+		player = self.level.player
 
 		"""Entities is a dict of arrays of characters/blocks,
 			ordered by z index"""
@@ -28,7 +29,10 @@ class ScreenWriter(object):
 				image = self.mapper.get_sprite( entity)
 				if not image or not entity.is_visible:
 					continue
-				self.screen.blit(image, entity.rect)
+				# Scrolling level
+				# if not entity == player:
+				# 	self.screen.blit(image, entity.rect.move(player.xdiff * -1,0))
+				self.screen.blit(image, entity.getrect())
 		clock = pygame.time.Clock()
 
 	def drawLevel(self, level):
