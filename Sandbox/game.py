@@ -9,7 +9,7 @@ import time
 logger = logging.getLogger("Game")
 logger.setLevel(logging.ERROR)
 ch = logging.StreamHandler()
-ch.setLevel(logging.ERROR)
+ch.setLevel(logging.WARN)
 logger.addHandler(ch)
 
 
@@ -58,6 +58,14 @@ while True:
 			screen.blit(label, (100,100))
 			pygame.display.flip()
 			time.sleep(5)
+			break
+		if level.lost():
+			myfont = pygame.font.SysFont("Times", 30)
+			label = myfont.render("You lost!", 1, (255,0,0))
+			screen_writer.drawLevel(level)
+			screen.blit(label, (100,100))
+			pygame.display.flip()
+			time.sleep(3)
 			break
 
 

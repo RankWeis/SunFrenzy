@@ -55,6 +55,8 @@ class SpriteMapper(object):
 			return self.get_bullet_sprite(entity)
 		if entity_class == Snowball:
 			return self.get_bullet_sprite(entity)
+		if entity_class == RubberBall:
+			return self.get_bullet_sprite(entity)
 
 
 

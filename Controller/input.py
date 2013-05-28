@@ -23,7 +23,7 @@ def handleKeyDown(player, key, level):
 		shoot(player, level)
 	if key[pygame.K_r]:
 		return True
-	if key[pygame.K_1] or key[pygame.K_2] or key[pygame.K_3] or key[pygame.K_4]:
+	if key[pygame.K_1] or key[pygame.K_2] or key[pygame.K_3] or key[pygame.K_4] or key[pygame.K_5]:
 		switch_weapons(player,key)
 	if key[pygame.K_ESCAPE]:
 		sys.exit()

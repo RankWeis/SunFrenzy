@@ -106,7 +106,6 @@ def stopJump(entity):
 	if entity.ySpeed < 0:
 		if isinstance(entity,Character):
 			entity.jumping = False
-		entity.ySpeed = 0
 
 def switch_weapons(player,key):
 	if key[pygame.K_1]:
@@ -117,3 +116,5 @@ def switch_weapons(player,key):
 		player.weapon = Gun(player,Exploder)
 	if key[pygame.K_4]:
 		player.weapon = Gun(player,Missile)
+	if key[pygame.K_5]:
+		player.weapon = Gun(player,RubberBall)

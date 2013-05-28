@@ -38,14 +38,20 @@ def collision_detected(rect, blocks):
 def movers_collisions(level):
 	movers = list(level.movers)
 	for attacker in movers:
+		# if not level.is_onscreen(attacker.rect):
+		# 	movers.remove(attacker)
+		# 	continue
 		for defender in movers:
 			if attacker == defender or not isinstance(defender,Character): continue
 			if attacker.rect.colliderect(defender.rect):
 				if isinstance(attacker,Projectile):
-					if isinstance(defender,Enemy):
+					if isinstance(defender,Character):
 						defender.hp -= attacker.damage
+						level.movers.remove(attacker)
 				if isinstance(attacker,Enemy):
 					if isinstance(defender,Player):
+						print("Player HP:",defender.hp)
 						defender.hp -= attacker.damage
+
 			if defender.hp <= 0 and defender in level.movers:
 				level.movers.remove(defender)

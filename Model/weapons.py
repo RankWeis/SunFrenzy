@@ -49,7 +49,7 @@ class Exploder(Projectile):
 				angle = math.radians(current_deg)
 				y = math.sin(angle) * intensity
 				x = math.cos(angle) * intensity
-				bulletXY = pygame.Rect(self.rect.x, self.rect.y, 5 ,5)
+				bulletXY = pygame.Rect(self.rect.x * (x / abs(x)), self.rect.y, 5 ,5)
 				cur = Bullet(bulletXY, x, (x,y))
 				level.movers.append(cur)
 			level.movers.remove(self)
@@ -74,6 +74,22 @@ class Missile(Projectile):
 					cur = Bullet(bulletXY, x, (x,y))
 					level.movers.append(cur)
 				level.movers.remove(self)
+
+class RubberBall(Projectile):
+
+	def __init__(self, rect, direction):
+		Projectile.__init__(self, rect, (1000 * direction, 0))
+		self.numcollisions = 0
+
+	def on_collision(self,level):
+		self.numcollisions += 1
+		print("Collisions",self.numcollisions)
+		if self.xSpeed < .1 and self.ySpeed < .1:
+			if self in level.movers:
+				level.movers.remove(self)
+		else:
+			self.xSpeed = -self.xSpeed * .7
+			self.ySpeed = -self.ySpeed * .5
 		
 
 class Weapon(object):
@@ -88,6 +104,9 @@ class Weapon(object):
 		if time - self.last_fired > self.recharge_speed:
 			self.last_fired = time
 			xDir = int( self.owner.direction / abs(self.owner.direction) )
+			startX = self.owner.rect.x
+			if xDir > 0:
+				startX = self.owner.rect.right
 			bulletXY = pygame.Rect(self.owner.rect.x+2,self.owner.rect.y + 10, 5, 5)
 			return self.ammo_type(bulletXY, xDir)
 		else:

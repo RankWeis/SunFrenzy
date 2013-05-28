@@ -44,13 +44,14 @@ class Character(Entity):
 
 class Enemy(Character):
 		# Path should be something like back and forth (repeat), unobstructed, follow player (follow), shoot player (shoot)
-	def __init__(self, rect, starting_movement, path):
+	def __init__(self, rect, starting_movement, path, damage=1):
 		Character.__init__(self, rect)
 		self.total_hp = 8
 		self.hp = self.total_hp
 		self.xSpeed = starting_movement[0]
 		self.ySpeed = starting_movement[1]
 		self.path = path
+		self.damage = damage
 
 class Fire(Enemy):
 
