@@ -5,13 +5,14 @@ import pygame, math
 class Projectile(Entity):
 
 	'''speed is a 2d array [x, y]'''
-	def __init__(self, rect, speed,damage=1):
+	def __init__(self, rect, speed, owner, damage=1):
 		Entity.__init__(self, rect)
 		self.xSpeed = speed[0]
 		self.ySpeed = speed[1]
 		self.destroy_on_collide = True
 		self.totalMoved = [0,0]
 		self.damage = damage
+		self.owner = owner
 
 	def on_collision(self,level):
 		if self in level.movers:
@@ -25,20 +26,19 @@ class Projectile(Entity):
 
 class Snowball(Projectile):
 
-	def __init__(self, rect, direction):
-		Projectile.__init__(self, rect, (250 * direction, 0))
+	def __init__(self, rect, direction, owner):
+		Projectile.__init__(self, rect, (250 * direction, 0), owner)
 
 class Bullet(Projectile):
 
-	def __init__(self, rect, direction, speed=None):
-		if not speed:
-			speed = (1000 * direction, 0)
-		Projectile.__init__(self, rect, speed)
+	def __init__(self, rect, direction, owner):
+		speed = (1000 * direction, 0)
+		Projectile.__init__(self, rect, speed, owner)
 
 class Exploder(Projectile):
 
-	def __init__(self, rect, direction):
-		Projectile.__init__(self, rect, (1000 * direction, 0))
+	def __init__(self, rect, direction, owner):
+		Projectile.__init__(self, rect, (1000 * direction, 0), owner)
 
 	def on_collision(self,level):
 		intensity = 500
@@ -56,8 +56,8 @@ class Exploder(Projectile):
 
 class Missile(Projectile):
 
-	def __init__(self, rect, direction):
-		Projectile.__init__(self, rect, (1000 * direction, 0))
+	def __init__(self, rect, direction, owner):
+		Projectile.__init__(self, rect, (1000 * direction, 0), owner)
 
 	def on_move(self,xy,level):
 		Projectile.on_move(self,xy,level)
@@ -77,8 +77,8 @@ class Missile(Projectile):
 
 class RubberBall(Projectile):
 
-	def __init__(self, rect, direction):
-		Projectile.__init__(self, rect, (1000 * direction, 0))
+	def __init__(self, rect, direction, owner):
+		Projectile.__init__(self, rect, (1000 * direction, 0), owner)
 		self.numcollisions = 0
 
 	def on_collision(self,level):
@@ -104,11 +104,11 @@ class Weapon(object):
 		if time - self.last_fired > self.recharge_speed:
 			self.last_fired = time
 			xDir = int( self.owner.direction / abs(self.owner.direction) )
-			startX = self.owner.rect.x
+			startX = self.owner.rect.left - 2
 			if xDir > 0:
-				startX = self.owner.rect.right
-			bulletXY = pygame.Rect(self.owner.rect.x+2,self.owner.rect.y + 10, 5, 5)
-			return self.ammo_type(bulletXY, xDir)
+				startX = self.owner.rect.right + 2
+			bulletXY = pygame.Rect(startX,self.owner.rect.y + 10, 5, 5)
+			return self.ammo_type(bulletXY, xDir, self.owner)
 		else:
 			return False
 

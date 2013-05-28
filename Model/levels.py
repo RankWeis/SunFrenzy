@@ -167,3 +167,6 @@ class Level(object):
 	def won_level(self):
 		return self.player.rect.colliderect(self.final_block.rect)
 
+	def lost(self):
+		return self.player.hp <=0 or not self.is_onscreen(self.map_to_arr(self.player.rect.midtop))
+

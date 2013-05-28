@@ -40,8 +40,6 @@ while True:
 		logger.debug("Moving Entities")
 		for entity in level.movers:
 			doMovement(entity,level)
-		if not level.is_onscreen(level.map_to_arr(player.rect.midtop)):
-			break
 
 		logger.debug("Resolving Collisions")
 		movers_collisions(level)
@@ -65,7 +63,7 @@ while True:
 			screen_writer.drawLevel(level)
 			screen.blit(label, (100,100))
 			pygame.display.flip()
-			time.sleep(3)
+			time.sleep(1)
 			break
 
 

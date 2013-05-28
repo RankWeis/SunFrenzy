@@ -46,6 +46,9 @@ def movers_collisions(level):
 			if attacker.rect.colliderect(defender.rect):
 				if isinstance(attacker,Projectile):
 					if isinstance(defender,Character):
+						# No Friendly fire
+						# if attacker.owner == defender:
+						# 	continue
 						defender.hp -= attacker.damage
 						level.movers.remove(attacker)
 				if isinstance(attacker,Enemy):
