@@ -28,7 +28,7 @@ level1 = [
 "W  BBBBB   II   BB   W",
 "W                    W",
 "W                  BBW",
-"W  S                 W",
+"W  S             E   W",
 "WGGGGGG  GGG     GGGGW",
 "WGGGGGG  GGG     GGGGW",
 "WGGGGGG  GGG     GGGGW"
@@ -51,8 +51,8 @@ level2 = [
 class Level(object):
 
 	def __init__(self):
-		self.curr_lvl = self.get_level2()
-		self.curr_lvl_str = level2
+		self.curr_lvl = self.get_level1()
+		self.curr_lvl_str = level1
 		self.won_lvl = False
 
 		# Time since last refresh

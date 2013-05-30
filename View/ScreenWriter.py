@@ -33,6 +33,9 @@ class ScreenWriter(object):
 				# if not entity == player:
 				# 	self.screen.blit(image, entity.rect.move(player.xdiff * -1,0))
 				self.screen.blit(image, entity.getrect())
+		myfont = pygame.font.SysFont("Times", 30)
+		label = myfont.render("HP: {0}/{1}".format(str(player.hp),str(player.total_hp)), 1, (255,0,0))
+		self.screen.blit(label, (10,10))
 		clock = pygame.time.Clock()
 
 	def drawLevel(self, level):

@@ -92,7 +92,7 @@ class Enemy(Character):
 
 	def hit(self, level, defender):
 		if isinstance(defender,Player):
-			defender.hp -= attacker.damage
+			defender.hp -= self.damage
 
 class Fire(Enemy):
 

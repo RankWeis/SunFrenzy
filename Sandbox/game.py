@@ -65,11 +65,8 @@ while True:
 			pygame.display.flip()
 			time.sleep(1)
 			break
-
-
-
+		
 		logger.debug("Draw")
-		screen.fill(black)
 		screen_writer.drawLevel(level)
 		pygame.display.flip()
 
