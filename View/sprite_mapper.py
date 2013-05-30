@@ -19,6 +19,7 @@ lavaFile="lava.jpg"
 bulletFile="bullet.png"
 fireFile="fire.png"
 iceFile="ice.png"
+laserFile="laser.jpg"
 
 class SpriteMapper(object):
 
@@ -34,6 +35,8 @@ class SpriteMapper(object):
 		self.fire_img = pygame.transform.scale(image, (20,20))
 		image = pygame.image.load( os.path.join(imagesLocation, iceFile))
 		self.ice_img = pygame.transform.scale(image, (40,40))
+		image = pygame.image.load( os.path.join(imagesLocation, laserFile))
+		self.laser_img = pygame.transform.scale(image, (20,20))
 
 	def get_sprite(self, entity):
 		entity_class = type(entity)
@@ -57,11 +60,16 @@ class SpriteMapper(object):
 			return self.get_bullet_sprite(entity)
 		if entity_class == RubberBall:
 			return self.get_bullet_sprite(entity)
+		if entity_class == Laser:
+			return self.get_laser_sprite(entity)
 
 
 
 	def get_bullet_sprite(self, entity):
-		return self.bullet_img
+		return pygame.transform.scale(self.bullet_img,entity.rect.size)
+
+	def get_laser_sprite(self, entity):
+		return pygame.transform.scale(self.laser_img,entity.rect.size)
 
 	def get_player_sprite(self, entity):
 		return self.player_img

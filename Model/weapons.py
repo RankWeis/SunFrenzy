@@ -40,6 +40,7 @@ class Projectile(Entity):
 			# 	continue
 			defender.hp -= self.damage
 			self.on_collisionX(level,0,defender)
+			print("Hit")
 
 
 class Snowball(Projectile):
@@ -104,6 +105,23 @@ class Missile(Projectile):
 		Projectile.moveY(self,distance,level)
 		self.on_move(level)
 
+class Laser(Projectile):
+	def __init__(self,rect,direction,owner):
+		Projectile.__init__(self, rect, (1000 * direction, 0), owner)
+
+	def moveX(self, distance,level):
+		self.direction = distance
+		oldx = self.rect.x
+		self.rect.inflate_ip(abs(distance),0)
+		xDir = int( self.owner.direction / abs(self.owner.direction) )
+		self.rect.right = self.owner.getrect().left - 2
+		if xDir > 0:
+			self.rect.left = self.owner.getrect().right + 2
+		self.rect.y = self.owner.getrect().y
+
+	def moveY(self, distance, level):
+		pass
+
 class RubberBall(Projectile):
 
 	def __init__(self, rect, direction, owner):
@@ -126,6 +144,7 @@ class Weapon(object):
 		self.recharge_speed = timedelta(seconds=recharge_speed)
 		self.ammo_type=ammo_type
 		self.last_fired = datetime.min
+		self.shotbullets = []
 
 	def fire(self):
 		time = datetime.now()
@@ -140,10 +159,14 @@ class Weapon(object):
 		else:
 			return False
 
-
 class Gun(Weapon):
 	def __init__(self,owner,ammo_type=Snowball):
 		Weapon.__init__(self,owner,.25,ammo_type)
+
+class LaserCannon(Weapon):
+	def __init__(self,owner):
+		Weapon.__init__(self,owner,0,Laser)
+
 
 
 #### START AMMO #####

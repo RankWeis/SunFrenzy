@@ -93,3 +93,5 @@ def switch_weapons(player,key):
 		player.weapon = Gun(player,Missile)
 	if key[pygame.K_5]:
 		player.weapon = Gun(player,RubberBall)
+	if key[pygame.K_6]:
+		player.weapon = LaserCannon(player)
