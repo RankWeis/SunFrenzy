@@ -41,25 +41,18 @@ def collision_detected(rect, blocks):
 def movers_collisions(level):
 	movers = list(level.movers)
 	for attacker in movers:
-		# if not level.is_onscreen(attacker.rect):
-		# 	movers.remove(attacker)
-		# 	continue
+		if attacker not in level.movers: continue
+		if not level.is_onscreenY(level.map_to_arr(attacker.rect)) and not attacker == level.player:
+		 	level.movers.remove(attacker)
+		 	continue
 		for defender in movers:
+			if defender not in level.movers or attacker not in level.movers: continue
 			if attacker == defender or not isinstance(defender,Character): continue
 			rect = defender.rect
 			if defender == level.player:
 				rect = defender.rect.move(defender.xdiff,0)
 			if attacker.rect.colliderect(rect):
-				if isinstance(attacker,Projectile):
-					if isinstance(defender,Character):
-						# No Friendly fire
-						# if attacker.owner == defender:
-						# 	continue
-						defender.hp -= attacker.damage
-						level.movers.remove(attacker)
-				if isinstance(attacker,Enemy):
-					if isinstance(defender,Player):
-						defender.hp -= attacker.damage
-
+				attacker.hit(level,defender)
+				defender.got_hit(level,attacker)
 			if defender.hp <= 0 and defender in level.movers:
 				level.movers.remove(defender)

@@ -32,32 +32,9 @@ def moveX(entity,level):
 	### Do collision based future calculations ###
 	collision = collision_detected(future_rect, blocks)
 	if collision:
-		if isinstance(entity,Projectile):
-			entity.on_collision(level)
-		if isinstance(entity,Enemy):
-			if entity.path == "unobstructed" or entity.path == "repeat":
-				entity.xSpeed = -entity.xSpeed
-		if move_amt < 0:
-			if entity == level.player:
-				return
-			else:
-				entity.rect.left = collision.rect.right - 1
-		else:
-			if entity == level.player:
-				return
-			else:
-				entity.rect.right = collision.rect.left + 1
+		entity.on_collisionX(level,move_amt,collision)
 	else:
-		# entity.xSpeed = move_amt
-		if not move_amt == 0:
-			entity.direction = entity.xSpeed
-
-		if isinstance(entity,Player):
-			entity.xdiff += move_amt
-		else:
-			entity.rect = future_rect
-		if isinstance(entity,Projectile):
-			entity.on_move((move_amt,0), level)
+		entity.moveX(move_amt,level)
 
 def moveY(entity,level):
 	move_amt = round(entity.ySpeed * level.tickseconds)
@@ -70,22 +47,10 @@ def moveY(entity,level):
 	else: return
 
 	collision = collision_detected(future_rect, blocks)
-	## There's gonna be way too much shit in this if, gotta find a better way to handle this ##
 	if collision:
-		if isinstance(entity,Projectile):
-			entity.on_collision(level)
-		if move_amt < 0:
-			entity.rect.top = collision.rect.bottom - 1
-			# Bounce back with some force
-			# Maybe this can be a property set by the block?
-			# i.e. bumpers in pinball
-			entity.ySpeed = -2
-		else:
-			entity.rect.bottom = collision.rect.top + 1
+		entity.on_collisionY(level,move_amt,collision)
 	else:
-		entity.rect = entity.rect.move(0,move_amt)
-		if isinstance(entity,Projectile):
-			entity.on_move((move_amt,0), level)
+		entity.moveY(move_amt,level)
 
 def shoot(entity, level):
 	if entity.weapon:

@@ -53,6 +53,7 @@ class Level(object):
 	def __init__(self):
 		self.curr_lvl = self.get_level2()
 		self.curr_lvl_str = level2
+		self.won_lvl = False
 
 		# Time since last refresh
 		self.tickseconds = 0
@@ -170,6 +171,11 @@ class Level(object):
 				return True
 		return False
 
+	def is_onscreenY(self, loc):
+		if loc[1] >= 0 and loc[1] < len(self.curr_lvl_str):
+			return True
+		return False
+
 	def has_enemies(self):
 		for ent in self.movers:
 			if isinstance(ent,Enemy):
@@ -181,7 +187,7 @@ class Level(object):
 			entity.notify(self)
 
 	def won_level(self):
-		return self.player.rect.colliderect(self.final_block.rect)
+		return self.won_lvl
 
 	def lost(self):
 		return self.player.hp <=0 or not self.is_onscreen(self.map_to_arr(self.player.rect.midtop))

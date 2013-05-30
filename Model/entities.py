@@ -15,6 +15,36 @@ class Entity(object):
 	def getrect(self):
 		return self.rect
 
+	def on_collisionY(self,level,move_amt,collideblk):
+		if move_amt < 0:
+			self.rect.top = collideblk.rect.bottom - 1
+			# Bounce back with some force
+			# Maybe this can be a property set by the block?
+			# i.e. bumpers in pinball
+			self.ySpeed = -2
+		else:
+			self.rect.bottom = collideblk.rect.top + 1
+
+	def on_collisionX(self,level,moveamt,collideblk):
+		if move_amt < 0:
+			self.rect.left = collideblk.rect.right - 1
+		else:
+			self.rect.right = collideblk.rect.left + 1
+
+	def got_hit(self,level,attacker):
+		pass
+
+	def hit(self,level,defender):
+		pass
+
+	def moveY(self, distance, level):
+		self.rect = self.rect.move(0,distance)
+
+	def moveX(self, distance, level):
+		self.direction = self.xSpeed
+		self.rect = self.rect.move(distance,0)
+
+
 """
 The base for characters.
 """
@@ -56,6 +86,14 @@ class Enemy(Character):
 		self.path = path
 		self.damage = damage
 
+	def on_collisionX(self,level,moveamt,collideblk):
+		if self.path == "unobstructed" or self.path == "repeat":
+			self.xSpeed = -self.xSpeed
+
+	def hit(self, level, defender):
+		if isinstance(defender,Player):
+			defender.hp -= attacker.damage
+
 class Fire(Enemy):
 
 	def __init__(self,rect,starting_movement,path="repeat"):
@@ -69,6 +107,19 @@ class Player(Character):
 
 	def getrect(self):
 		return self.rect.move(self.xdiff,0)
+
+	def on_collisionX(self,level,moveamt,collideblk):
+		if collideblk == level.final_block:
+			level.won_lvl = True
+
+	def on_collisionY(self,level,moveamt,collideblk):
+		if collideblk == level.final_block:
+			level.won_lvl = True
+		Character.on_collisionY(self,level,moveamt,collideblk)
+
+	def moveX(self,distance,level):
+		self.direction = distance
+		self.xdiff += distance
 
 """
 The base for backgrounds. Backgrounds can be

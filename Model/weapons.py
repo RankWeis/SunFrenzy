@@ -14,15 +14,33 @@ class Projectile(Entity):
 		self.damage = damage
 		self.owner = owner
 
-	def on_collision(self,level):
+	def on_collisionX(self,level,move_amt,collideblk):
+		if self in level.movers:
+			level.movers.remove(self)
+
+	def on_collisionY(self,level,move_amt,collideblk):
 		if self in level.movers:
 			level.movers.remove(self)
 
 	def get_total_moved(self):
 		return math.sqrt(self.totalMoved[0]**2 + self.totalMoved[1]**2)
 
-	def on_move(self, xy, level):
-		self.totalMoved = (self.totalMoved[0] + xy[0], self.totalMoved[1] + xy[1])
+	def moveX(self, distance, level):
+		self.totalMoved[0] += distance
+		Entity.moveX(self, distance, level)
+
+	def moveY(self, distance, level):
+		self.totalMoved[1] += distance
+		Entity.moveY(self, distance, level)
+
+	def hit(self, level, defender):
+		if isinstance(defender,Character):
+			# No Friendly fire
+			# if attacker.owner == defender:
+			# 	continue
+			defender.hp -= self.damage
+			self.on_collisionX(level,0,defender)
+
 
 class Snowball(Projectile):
 
@@ -31,8 +49,9 @@ class Snowball(Projectile):
 
 class Bullet(Projectile):
 
-	def __init__(self, rect, direction, owner):
-		speed = (1000 * direction, 0)
+	def __init__(self, rect, direction, owner, speed=None):
+		if not speed:
+			speed = (1000 * direction, 0)
 		Projectile.__init__(self, rect, speed, owner)
 
 class Exploder(Projectile):
@@ -40,7 +59,7 @@ class Exploder(Projectile):
 	def __init__(self, rect, direction, owner):
 		Projectile.__init__(self, rect, (1000 * direction, 0), owner)
 
-	def on_collision(self,level):
+	def on_collisionX(self,level,move_amt,collideblk):
 		intensity = 500
 		num_bullets = 20
 		if self in level.movers:
@@ -49,18 +68,20 @@ class Exploder(Projectile):
 				angle = math.radians(current_deg)
 				y = math.sin(angle) * intensity
 				x = math.cos(angle) * intensity
-				bulletXY = pygame.Rect(self.rect.x * (x / abs(x)), self.rect.y, 5 ,5)
-				cur = Bullet(bulletXY, x, (x,y))
+				bulletXY = pygame.Rect(self.getrect().x, self.rect.y, 5 ,5)
+				cur = Bullet(bulletXY, x, self.owner, (x,y))
 				level.movers.append(cur)
 			level.movers.remove(self)
+
+	def on_collisionY(self,level,move_amt,collideblk):
+		self.on_collisionX(level,move_amt,collideblk)
 
 class Missile(Projectile):
 
 	def __init__(self, rect, direction, owner):
 		Projectile.__init__(self, rect, (1000 * direction, 0), owner)
 
-	def on_move(self,xy,level):
-		Projectile.on_move(self,xy,level)
+	def on_move(self,level):
 		if self.get_total_moved() > 500:
 			intensity = 500
 			num_bullets = 20
@@ -70,10 +91,18 @@ class Missile(Projectile):
 					angle = math.radians(current_deg)
 					y = math.sin(angle) * intensity
 					x = math.cos(angle) * intensity
-					bulletXY = pygame.Rect(self.rect.x, self.rect.y, 5 ,5)
-					cur = Bullet(bulletXY, x, (x,y))
+					bulletXY = pygame.Rect(self.getrect().x, self.rect.y, 5 ,5)
+					cur = Bullet(bulletXY, x, self.owner, (x,y))
 					level.movers.append(cur)
 				level.movers.remove(self)
+
+	def moveX(self,distance,level):
+		Projectile.moveX(self,distance,level)
+		self.on_move(level)
+
+	def moveY(self,distance,level):
+		Projectile.moveY(self,distance,level)
+		self.on_move(level)
 
 class RubberBall(Projectile):
 
@@ -81,9 +110,8 @@ class RubberBall(Projectile):
 		Projectile.__init__(self, rect, (1000 * direction, 0), owner)
 		self.numcollisions = 0
 
-	def on_collision(self,level):
+	def on_collisionX(self,level,move_amt,collision):
 		self.numcollisions += 1
-		print("Collisions",self.numcollisions)
 		if self.xSpeed < .1 and self.ySpeed < .1:
 			if self in level.movers:
 				level.movers.remove(self)
