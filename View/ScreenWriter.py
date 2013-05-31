@@ -22,17 +22,23 @@ class ScreenWriter(object):
 		"""Entities is a dict of arrays of characters/blocks,
 			ordered by z index"""
 		for i in range(5):
+			player = self.level.player
 			entityList = entityDict[i]
+			scroll = False
 			if not entityList:
 				continue
 			for entity in entityList:
 				image = self.mapper.get_sprite( entity)
 				if not image or not entity.is_visible:
 					continue
-				# Scrolling level
-				# if not entity == player:
-				# 	self.screen.blit(image, entity.rect.move(player.xdiff * -1,0))
-				self.screen.blit(image, entity.getrect())
+				#Scrolling level
+				if (scroll):
+					if not entity == player:
+						self.screen.blit(image, entity.rect.move(player.xdiff * -1,0))
+					else:
+						self.screen.blit(image, entity.rect)
+				else:
+					self.screen.blit(image,entity.getrect())
 		myfont = pygame.font.SysFont("Times", 30)
 		label = myfont.render("HP: {0}/{1}".format(str(player.hp),str(player.total_hp)), 1, (255,0,0))
 		self.screen.blit(label, (10,10))

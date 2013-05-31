@@ -51,8 +51,7 @@ level2 = [
 class Level(object):
 
 	def __init__(self):
-		self.curr_lvl = self.get_level1()
-		self.curr_lvl_str = level1
+		self.curr_lvl = self.get_level2()
 		self.won_lvl = False
 
 		# Time since last refresh
@@ -67,12 +66,6 @@ class Level(object):
 				curr_blk = self.char_to_ent( level[y][x], x, y)
 				self.blocks_rep[y][x] = curr_blk
 				self.blocks[i] = curr_blk
-				if x != 0:
-					self.blocks[i].leftBlock = self.blocks[i-1]
-					self.blocks[i-1].rightBlock = self.blocks[i]
-				if y != 0:
-					self.blocks[i].aboveBlock = self.blocks[i-len(level[y])]
-					self.blocks[i-len(level[y])].belowBlock = self.blocks[i]
 				i += 1
 		return self.blocks
 
@@ -111,9 +104,11 @@ class Level(object):
 			return Air( rect)
 
 	def get_level1(self):
+		self.curr_lvl_str = level1
 		return self.level_ingestor(level1)
 
 	def get_level2(self):
+		self.curr_lvl_str = level2
 		return self.level_ingestor(level2)
 
 	def map_to_arr(self, xypos):

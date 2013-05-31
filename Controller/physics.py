@@ -28,16 +28,6 @@ def collision_detected(rect, blocks):
 			return block
 	return False
 
-# Resolve all collisions by the movers in the level
-# Shouldn't be in physics though...
-# Types of collisions currently possible:
-# Projectile vs character
-# Projectile vs Enemy
-# character vs Enemy
-# character vs projectile
-# enemy vs projectile
-# enemy vs character
-# enemy vs enemy
 def movers_collisions(level):
 	movers = list(level.movers)
 	for attacker in movers:
@@ -48,10 +38,8 @@ def movers_collisions(level):
 		for defender in movers:
 			if defender not in level.movers or attacker not in level.movers: continue
 			if attacker == defender or not isinstance(defender,Character): continue
-			rect = defender.rect
-			if defender == level.player:
-				rect = defender.rect.move(defender.xdiff,0)
-			if attacker.rect.colliderect(rect):
+			rect = defender.getrect()
+			if attacker.getrect().colliderect(rect):
 				attacker.hit(level,defender)
 				defender.got_hit(level,attacker)
 			if defender.hp <= 0 and defender in level.movers:

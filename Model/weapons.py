@@ -40,7 +40,6 @@ class Projectile(Entity):
 			# 	continue
 			defender.hp -= self.damage
 			self.on_collisionX(level,0,defender)
-			print("Hit")
 
 
 class Snowball(Projectile):
